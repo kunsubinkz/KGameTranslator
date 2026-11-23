@@ -1,0 +1,56 @@
+{
+  "_generatedBy" : "macos/Packages/TranslatorCore/Tests/TranslatorCoreTests/VectorExportTests.swift",
+  "_note" : "key = SHA-256 hex chữ thường của UTF-8(profileId + \"\\n\" + source.lowercased()) theo Swift",
+  "cases" : [
+    {
+      "key" : "d4bd57b025577c78220a7dd722402901af61d01cd442d022b79d463ef958ae5a",
+      "profileId" : "default",
+      "source" : "Hello there"
+    },
+    {
+      "key" : "d4bd57b025577c78220a7dd722402901af61d01cd442d022b79d463ef958ae5a",
+      "profileId" : "default",
+      "source" : "HELLO THERE"
+    },
+    {
+      "key" : "6502013ece855e641c59dc6c5a268641952bbf1b87fbd5854b00f4eb2f8a9e4e",
+      "profileId" : "zelda-totk",
+      "source" : "Hello there"
+    },
+    {
+      "key" : "c282094fca3cedcd6a2a253638cba7bef5fa13200c31a9b087e3cd4a98ed7df8",
+      "profileId" : "zelda-totk",
+      "source" : "The kingdom needs you now more than ever, Link."
+    },
+    {
+      "key" : "55ce7f1acd9e5201140ba4b759b655a550570d3082beb762a03163e0dff66a02",
+      "profileId" : "p",
+      "source" : "Café NAÏVE Ünïcödé"
+    },
+    {
+      "key" : "9e5ddca907415b32b3dcf2857eadb3e26e5c2f6951ccd8be41c4a50b1e6e4e08",
+      "profileId" : "p",
+      "source" : "İstanbul"
+    },
+    {
+      "key" : "c8228027eae20f72a818eda8c66464c313c7d40e50775050fc3747322514cb7b",
+      "profileId" : "p",
+      "source" : "ß straße"
+    },
+    {
+      "key" : "fd6641673e7f3bf6e80e4bc5401fcb2821a1e117206c8e1c65cef23a58dc37ff",
+      "profileId" : "p",
+      "source" : ""
+    },
+    {
+      "key" : "2a8c73a63c64df1dcbbf794ebeb465d198e7bfb7e89f672ce9198465cebc3535",
+      "profileId" : "vi",
+      "source" : "Tiếng Việt CÓ DẤU"
+    },
+    {
+      "key" : "2cb2efd50451b52976abb1fc44b7d158c728d69f472dff6772d3d9a18f71016f",
+      "profileId" : "p",
+      "source" : "emoji 🎮 GAME"
+    }
+  ]
+}

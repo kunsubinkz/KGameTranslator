@@ -1,0 +1,250 @@
+{
+  "_generatedBy" : "macos/Packages/TranslatorCore/Tests/TranslatorCoreTests/VectorExportTests.swift",
+  "dayKey" : [
+    {
+      "dayKey" : "2026-11-23",
+      "unixSeconds" : 1795428000
+    },
+    {
+      "dayKey" : "2026-11-23",
+      "unixSeconds" : 1795507199
+    },
+    {
+      "dayKey" : "2026-11-24",
+      "unixSeconds" : 1795507200
+    },
+    {
+      "dayKey" : "2026-11-24",
+      "unixSeconds" : 1795510800
+    },
+    {
+      "dayKey" : "2026-03-07",
+      "unixSeconds" : 1772956799
+    },
+    {
+      "dayKey" : "2026-03-08",
+      "unixSeconds" : 1772956800
+    },
+    {
+      "dayKey" : "2026-03-08",
+      "unixSeconds" : 1773039599
+    },
+    {
+      "dayKey" : "2026-03-09",
+      "unixSeconds" : 1773039600
+    },
+    {
+      "dayKey" : "2026-10-31",
+      "unixSeconds" : 1793516399
+    },
+    {
+      "dayKey" : "2026-11-01",
+      "unixSeconds" : 1793516400
+    },
+    {
+      "dayKey" : "2026-11-01",
+      "unixSeconds" : 1793606399
+    },
+    {
+      "dayKey" : "2026-11-02",
+      "unixSeconds" : 1793606400
+    },
+    {
+      "dayKey" : "1969-12-31",
+      "unixSeconds" : 0
+    },
+    {
+      "dayKey" : "2023-12-31",
+      "unixSeconds" : 1704067200
+    }
+  ],
+  "scenarios" : [
+    {
+      "name" : "burst_then_refill",
+      "perDay" : 100,
+      "perMinute" : 3,
+      "startUnixSeconds" : 1795428000,
+      "steps" : [
+        {
+          "expected" : true,
+          "offsetSeconds" : 0,
+          "op" : "acquire"
+        },
+        {
+          "expected" : true,
+          "offsetSeconds" : 0,
+          "op" : "acquire"
+        },
+        {
+          "expected" : true,
+          "offsetSeconds" : 0,
+          "op" : "acquire"
+        },
+        {
+          "expected" : false,
+          "offsetSeconds" : 1,
+          "op" : "acquire"
+        },
+        {
+          "expected" : true,
+          "offsetSeconds" : 20,
+          "op" : "acquire"
+        },
+        {
+          "expected" : false,
+          "offsetSeconds" : 21,
+          "op" : "acquire"
+        },
+        {
+          "expected" : 96,
+          "offsetSeconds" : 21,
+          "op" : "remaining"
+        }
+      ]
+    },
+    {
+      "name" : "daily_limit",
+      "perDay" : 3,
+      "perMinute" : 60,
+      "startUnixSeconds" : 1795428000,
+      "steps" : [
+        {
+          "expected" : true,
+          "offsetSeconds" : 0,
+          "op" : "acquire"
+        },
+        {
+          "expected" : true,
+          "offsetSeconds" : 1,
+          "op" : "acquire"
+        },
+        {
+          "expected" : true,
+          "offsetSeconds" : 2,
+          "op" : "acquire"
+        },
+        {
+          "expected" : false,
+          "offsetSeconds" : 3,
+          "op" : "acquire"
+        },
+        {
+          "expected" : 0,
+          "offsetSeconds" : 3,
+          "op" : "remaining"
+        }
+      ]
+    },
+    {
+      "name" : "day_rolls_at_pacific_midnight",
+      "perDay" : 2,
+      "perMinute" : 60,
+      "startUnixSeconds" : 1795428000,
+      "steps" : [
+        {
+          "expected" : true,
+          "offsetSeconds" : 0,
+          "op" : "acquire"
+        },
+        {
+          "expected" : true,
+          "offsetSeconds" : 1,
+          "op" : "acquire"
+        },
+        {
+          "expected" : false,
+          "offsetSeconds" : 2,
+          "op" : "acquire"
+        },
+        {
+          "expected" : false,
+          "offsetSeconds" : 79199,
+          "op" : "acquire"
+        },
+        {
+          "expected" : true,
+          "offsetSeconds" : 79201,
+          "op" : "acquire"
+        },
+        {
+          "expected" : 1,
+          "offsetSeconds" : 79202,
+          "op" : "remaining"
+        }
+      ]
+    },
+    {
+      "name" : "restored_same_day",
+      "perDay" : 5,
+      "perMinute" : 60,
+      "restored" : {
+        "count" : 4,
+        "dayKey" : "2026-11-23"
+      },
+      "startUnixSeconds" : 1795428000,
+      "steps" : [
+        {
+          "expected" : 1,
+          "offsetSeconds" : 0,
+          "op" : "remaining"
+        },
+        {
+          "expected" : true,
+          "offsetSeconds" : 0,
+          "op" : "acquire"
+        },
+        {
+          "expected" : false,
+          "offsetSeconds" : 1,
+          "op" : "acquire"
+        }
+      ]
+    },
+    {
+      "name" : "restored_other_day",
+      "perDay" : 5,
+      "perMinute" : 60,
+      "restored" : {
+        "count" : 4,
+        "dayKey" : "2000-01-01"
+      },
+      "startUnixSeconds" : 1795428000,
+      "steps" : [
+        {
+          "expected" : 5,
+          "offsetSeconds" : 0,
+          "op" : "remaining"
+        },
+        {
+          "expected" : true,
+          "offsetSeconds" : 0,
+          "op" : "acquire"
+        }
+      ]
+    },
+    {
+      "name" : "min_values_clamped",
+      "perDay" : 0,
+      "perMinute" : 0,
+      "startUnixSeconds" : 1795428000,
+      "steps" : [
+        {
+          "expected" : true,
+          "offsetSeconds" : 0,
+          "op" : "acquire"
+        },
+        {
+          "expected" : false,
+          "offsetSeconds" : 120,
+          "op" : "acquire"
+        },
+        {
+          "expected" : 0,
+          "offsetSeconds" : 120,
+          "op" : "remaining"
+        }
+      ]
+    }
+  ],
+  "timeZone" : "America/Los_Angeles"
+}

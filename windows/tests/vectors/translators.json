@@ -1,0 +1,329 @@
+{
+  "_generatedBy" : "macos/Packages/TranslatorCore/Tests/TranslatorCoreTests/VectorExportTests.swift",
+  "_note" : "body so sánh theo cấu trúc JSON (thứ tự khóa không quan trọng). Lỗi network kèm thông điệp sau dấu ':'",
+  "claude" : {
+    "httpStatus" : [
+      {
+        "response" : "{\"content\":[{\"type\":\"text\",\"text\":\"Xin chào\"}],\"stop_reason\":\"end_turn\"}",
+        "result" : "Xin chào",
+        "status" : 200
+      },
+      {
+        "error" : "quotaExceeded",
+        "response" : "{\"type\":\"error\",\"error\":{\"type\":\"rate_limit_error\"}}",
+        "status" : 429
+      },
+      {
+        "error" : "network:API key Claude không hợp lệ (HTTP 401)",
+        "response" : "{\"type\":\"error\",\"error\":{\"type\":\"authentication_error\"}}",
+        "status" : 401
+      },
+      {
+        "error" : "network:API key Claude không hợp lệ (HTTP 403)",
+        "response" : "{\"type\":\"error\",\"error\":{\"type\":\"permission_error\"}}",
+        "status" : 403
+      },
+      {
+        "error" : "quotaExceeded",
+        "response" : "{\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API.\"}}",
+        "status" : 400
+      },
+      {
+        "error" : "network:HTTP 400",
+        "response" : "{\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"bad model\"}}",
+        "status" : 400
+      },
+      {
+        "error" : "network:HTTP 500",
+        "response" : "{}",
+        "status" : 500
+      },
+      {
+        "error" : "network:HTTP 529",
+        "response" : "{\"type\":\"error\",\"error\":{\"type\":\"overloaded_error\"}}",
+        "status" : 529
+      }
+    ],
+    "id" : "claude:claude-haiku-5-5",
+    "parse" : [
+      {
+        "response" : "{\"content\":[{\"type\":\"text\",\"text\":\" Xin chào \\n\"}],\"stop_reason\":\"end_turn\"}",
+        "result" : "Xin chào"
+      },
+      {
+        "response" : "{\"content\":[{\"type\":\"thinking\",\"thinking\":\"\"},{\"type\":\"text\",\"text\":\"Chào \"},{\"type\":\"text\",\"text\":\"bạn\"}],\"stop_reason\":\"end_turn\"}",
+        "result" : "Chào bạn"
+      },
+      {
+        "error" : "blocked",
+        "response" : "{\"content\":[],\"stop_reason\":\"refusal\"}"
+      },
+      {
+        "error" : "emptyResponse",
+        "response" : "{\"content\":[{\"type\":\"text\",\"text\":\"   \"}],\"stop_reason\":\"end_turn\"}"
+      },
+      {
+        "error" : "emptyResponse",
+        "response" : "{}"
+      },
+      {
+        "error" : "emptyResponse",
+        "response" : "not json"
+      }
+    ],
+    "requests" : [
+      {
+        "body" : {
+          "max_tokens" : 1024,
+          "messages" : [
+            {
+              "content" : "Các câu trước (chỉ để tham khảo ngữ cảnh):\nEN: Hello.\nVI: Xin chào.\n\nCâu cần dịch:\nWelcome to Hyrule, traveler!",
+              "role" : "user"
+            }
+          ],
+          "model" : "claude-haiku-5-5",
+          "system" : "Bạn là người dịch hội thoại trò chơi điện tử từ tiếng Anh sang tiếng Việt.\n- Dịch tự nhiên, đúng giọng nhân vật, ngắn gọn để làm phụ đề.\n- Giữ nguyên tên riêng theo bảng thuật ngữ bên dưới.\n- Văn bản là kết quả OCR, có thể sai vài ký tự; hãy đoán nghĩa hợp lý.\n- Chỉ trả về bản dịch, không giải thích.\n\nThuật ngữ:\nHyrule = Hyrule\nLink = Link",
+          "thinking" : {
+            "type" : "disabled"
+          }
+        },
+        "headers" : {
+          "anthropic-version" : "2023-06-01",
+          "Content-Type" : "application/json",
+          "x-api-key" : "TEST_KEY"
+        },
+        "method" : "POST",
+        "model" : "claude-haiku-5-5",
+        "url" : "https://api.anthropic.com/v1/messages"
+      },
+      {
+        "body" : {
+          "max_tokens" : 1024,
+          "messages" : [
+            {
+              "content" : "Các câu trước (chỉ để tham khảo ngữ cảnh):\nEN: Hello.\nVI: Xin chào.\n\nCâu cần dịch:\nWelcome to Hyrule, traveler!",
+              "role" : "user"
+            }
+          ],
+          "model" : "claude-sonnet-5-5",
+          "system" : "Bạn là người dịch hội thoại trò chơi điện tử từ tiếng Anh sang tiếng Việt.\n- Dịch tự nhiên, đúng giọng nhân vật, ngắn gọn để làm phụ đề.\n- Giữ nguyên tên riêng theo bảng thuật ngữ bên dưới.\n- Văn bản là kết quả OCR, có thể sai vài ký tự; hãy đoán nghĩa hợp lý.\n- Chỉ trả về bản dịch, không giải thích.\n\nThuật ngữ:\nHyrule = Hyrule\nLink = Link",
+          "thinking" : {
+            "type" : "between_tools"
+          }
+        },
+        "headers" : {
+          "anthropic-version" : "2023-06-01",
+          "Content-Type" : "application/json",
+          "x-api-key" : "TEST_KEY"
+        },
+        "method" : "POST",
+        "model" : "claude-sonnet-5-5",
+        "url" : "https://api.anthropic.com/v1/messages"
+      },
+      {
+        "body" : {
+          "max_tokens" : 1024,
+          "messages" : [
+            {
+              "content" : "Các câu trước (chỉ để tham khảo ngữ cảnh):\nEN: Hello.\nVI: Xin chào.\n\nCâu cần dịch:\nWelcome to Hyrule, traveler!",
+              "role" : "user"
+            }
+          ],
+          "model" : "claude-opus-5-5",
+          "output_config" : {
+            "effort" : "low"
+          },
+          "system" : "Bạn là người dịch hội thoại trò chơi điện tử từ tiếng Anh sang tiếng Việt.\n- Dịch tự nhiên, đúng giọng nhân vật, ngắn gọn để làm phụ đề.\n- Giữ nguyên tên riêng theo bảng thuật ngữ bên dưới.\n- Văn bản là kết quả OCR, có thể sai vài ký tự; hãy đoán nghĩa hợp lý.\n- Chỉ trả về bản dịch, không giải thích.\n\nThuật ngữ:\nHyrule = Hyrule\nLink = Link"
+        },
+        "headers" : {
+          "anthropic-version" : "2023-06-01",
+          "Content-Type" : "application/json",
+          "x-api-key" : "TEST_KEY"
+        },
+        "method" : "POST",
+        "model" : "claude-opus-5-5",
+        "url" : "https://api.anthropic.com/v1/messages"
+      },
+      {
+        "body" : {
+          "max_tokens" : 1024,
+          "messages" : [
+            {
+              "content" : "Các câu trước (chỉ để tham khảo ngữ cảnh):\nEN: Hello.\nVI: Xin chào.\n\nCâu cần dịch:\nWelcome to Hyrule, traveler!",
+              "role" : "user"
+            }
+          ],
+          "model" : "claude-sonnet-5",
+          "system" : "Bạn là người dịch hội thoại trò chơi điện tử từ tiếng Anh sang tiếng Việt.\n- Dịch tự nhiên, đúng giọng nhân vật, ngắn gọn để làm phụ đề.\n- Giữ nguyên tên riêng theo bảng thuật ngữ bên dưới.\n- Văn bản là kết quả OCR, có thể sai vài ký tự; hãy đoán nghĩa hợp lý.\n- Chỉ trả về bản dịch, không giải thích.\n\nThuật ngữ:\nHyrule = Hyrule\nLink = Link"
+        },
+        "headers" : {
+          "anthropic-version" : "2023-06-01",
+          "Content-Type" : "application/json",
+          "x-api-key" : "TEST_KEY"
+        },
+        "method" : "POST",
+        "model" : "claude-sonnet-5",
+        "url" : "https://api.anthropic.com/v1/messages"
+      },
+      {
+        "body" : {
+          "max_tokens" : 1024,
+          "messages" : [
+            {
+              "content" : "Các câu trước (chỉ để tham khảo ngữ cảnh):\nEN: Hello.\nVI: Xin chào.\n\nCâu cần dịch:\nWelcome to Hyrule, traveler!",
+              "role" : "user"
+            }
+          ],
+          "model" : "claude-haiku-4-5",
+          "system" : "Bạn là người dịch hội thoại trò chơi điện tử từ tiếng Anh sang tiếng Việt.\n- Dịch tự nhiên, đúng giọng nhân vật, ngắn gọn để làm phụ đề.\n- Giữ nguyên tên riêng theo bảng thuật ngữ bên dưới.\n- Văn bản là kết quả OCR, có thể sai vài ký tự; hãy đoán nghĩa hợp lý.\n- Chỉ trả về bản dịch, không giải thích.\n\nThuật ngữ:\nHyrule = Hyrule\nLink = Link",
+          "thinking" : {
+            "type" : "disabled"
+          }
+        },
+        "headers" : {
+          "anthropic-version" : "2023-06-01",
+          "Content-Type" : "application/json",
+          "x-api-key" : "TEST_KEY"
+        },
+        "method" : "POST",
+        "model" : "claude-haiku-4-5",
+        "url" : "https://api.anthropic.com/v1/messages"
+      },
+      {
+        "body" : {
+          "max_tokens" : 1024,
+          "messages" : [
+            {
+              "content" : "Các câu trước (chỉ để tham khảo ngữ cảnh):\nEN: Hello.\nVI: Xin chào.\n\nCâu cần dịch:\nWelcome to Hyrule, traveler!",
+              "role" : "user"
+            }
+          ],
+          "model" : "my-custom-model",
+          "system" : "Bạn là người dịch hội thoại trò chơi điện tử từ tiếng Anh sang tiếng Việt.\n- Dịch tự nhiên, đúng giọng nhân vật, ngắn gọn để làm phụ đề.\n- Giữ nguyên tên riêng theo bảng thuật ngữ bên dưới.\n- Văn bản là kết quả OCR, có thể sai vài ký tự; hãy đoán nghĩa hợp lý.\n- Chỉ trả về bản dịch, không giải thích.\n\nThuật ngữ:\nHyrule = Hyrule\nLink = Link"
+        },
+        "headers" : {
+          "anthropic-version" : "2023-06-01",
+          "Content-Type" : "application/json",
+          "x-api-key" : "TEST_KEY"
+        },
+        "method" : "POST",
+        "model" : "my-custom-model",
+        "url" : "https://api.anthropic.com/v1/messages"
+      }
+    ]
+  },
+  "engineLabels" : {
+    "apple" : "apple",
+    "claude" : "claude:m",
+    "gemini" : "gemini:m",
+    "original" : "original"
+  },
+  "gemini" : {
+    "httpStatus" : [
+      {
+        "response" : "{\"candidates\":[{\"content\":{\"parts\":[{\"text\":\"Xin chào\"}]}}]}",
+        "result" : "Xin chào",
+        "status" : 200
+      },
+      {
+        "error" : "quotaExceeded",
+        "response" : "{}",
+        "status" : 429
+      },
+      {
+        "error" : "network:HTTP 400",
+        "response" : "{}",
+        "status" : 400
+      },
+      {
+        "error" : "network:HTTP 403",
+        "response" : "{}",
+        "status" : 403
+      },
+      {
+        "error" : "network:HTTP 500",
+        "response" : "{}",
+        "status" : 500
+      }
+    ],
+    "id" : "gemini:gemini-flash-lite-latest",
+    "parse" : [
+      {
+        "response" : "{\"candidates\":[{\"content\":{\"parts\":[{\"text\":\" Xin chào \\n\"}]}}]}",
+        "result" : "Xin chào"
+      },
+      {
+        "response" : "{\"candidates\":[{\"content\":{\"parts\":[{\"text\":\"Chào \"},{\"text\":\"bạn\"}]}}]}",
+        "result" : "Chào bạn"
+      },
+      {
+        "error" : "blocked",
+        "response" : "{\"promptFeedback\":{\"blockReason\":\"SAFETY\"}}"
+      },
+      {
+        "error" : "blocked",
+        "response" : "{\"candidates\":[{\"finishReason\":\"SAFETY\",\"content\":{\"parts\":[]}}]}"
+      },
+      {
+        "error" : "emptyResponse",
+        "response" : "{\"candidates\":[]}"
+      },
+      {
+        "error" : "emptyResponse",
+        "response" : "{}"
+      }
+    ],
+    "requests" : [
+      {
+        "body" : {
+          "contents" : [
+            {
+              "parts" : [
+                {
+                  "text" : "Các câu trước (chỉ để tham khảo ngữ cảnh):\nEN: Hello.\nVI: Xin chào.\n\nCâu cần dịch:\nWelcome to Hyrule, traveler!"
+                }
+              ],
+              "role" : "user"
+            }
+          ],
+          "generationConfig" : {
+            "maxOutputTokens" : 300,
+            "temperature" : 0.29999999999999999
+          },
+          "systemInstruction" : {
+            "parts" : [
+              {
+                "text" : "Bạn là người dịch hội thoại trò chơi điện tử từ tiếng Anh sang tiếng Việt.\n- Dịch tự nhiên, đúng giọng nhân vật, ngắn gọn để làm phụ đề.\n- Giữ nguyên tên riêng theo bảng thuật ngữ bên dưới.\n- Văn bản là kết quả OCR, có thể sai vài ký tự; hãy đoán nghĩa hợp lý.\n- Chỉ trả về bản dịch, không giải thích.\n\nThuật ngữ:\nHyrule = Hyrule\nLink = Link"
+              }
+            ]
+          }
+        },
+        "headers" : {
+          "Content-Type" : "application/json",
+          "x-goog-api-key" : "TEST_KEY"
+        },
+        "method" : "POST",
+        "model" : "gemini-flash-lite-latest",
+        "url" : "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent"
+      }
+    ]
+  },
+  "missingKey" : {
+    "claude" : "missingAPIKey",
+    "gemini" : "missingAPIKey"
+  },
+  "request" : {
+    "apiKey" : "TEST_KEY",
+    "context" : [
+      {
+        "source" : "Hello.",
+        "target" : "Xin chào."
+      }
+    ],
+    "glossary" : {
+      "Hyrule" : "Hyrule",
+      "Link" : "Link"
+    },
+    "text" : "Welcome to Hyrule, traveler!"
+  }
+}

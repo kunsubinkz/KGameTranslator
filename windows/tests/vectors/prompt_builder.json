@@ -1,0 +1,70 @@
+{
+  "_generatedBy" : "macos/Packages/TranslatorCore/Tests/TranslatorCoreTests/VectorExportTests.swift",
+  "_note" : "Thuật ngữ sắp theo phép so sánh String < của Swift (thứ tự Unicode scalar sau chuẩn hóa)",
+  "baseInstruction" : "Bạn là người dịch hội thoại trò chơi điện tử từ tiếng Anh sang tiếng Việt.\n- Dịch tự nhiên, đúng giọng nhân vật, ngắn gọn để làm phụ đề.\n- Giữ nguyên tên riêng theo bảng thuật ngữ bên dưới.\n- Văn bản là kết quả OCR, có thể sai vài ký tự; hãy đoán nghĩa hợp lý.\n- Chỉ trả về bản dịch, không giải thích.",
+  "systemInstruction" : [
+    {
+      "expected" : "Bạn là người dịch hội thoại trò chơi điện tử từ tiếng Anh sang tiếng Việt.\n- Dịch tự nhiên, đúng giọng nhân vật, ngắn gọn để làm phụ đề.\n- Giữ nguyên tên riêng theo bảng thuật ngữ bên dưới.\n- Văn bản là kết quả OCR, có thể sai vài ký tự; hãy đoán nghĩa hợp lý.\n- Chỉ trả về bản dịch, không giải thích.",
+      "glossary" : {
+
+      }
+    },
+    {
+      "expected" : "Bạn là người dịch hội thoại trò chơi điện tử từ tiếng Anh sang tiếng Việt.\n- Dịch tự nhiên, đúng giọng nhân vật, ngắn gọn để làm phụ đề.\n- Giữ nguyên tên riêng theo bảng thuật ngữ bên dưới.\n- Văn bản là kết quả OCR, có thể sai vài ký tự; hãy đoán nghĩa hợp lý.\n- Chỉ trả về bản dịch, không giải thích.\n\nThuật ngữ:\nHyrule = Hyrule\nLink = Link\nRupee = Rupee\nZelda = Zelda",
+      "glossary" : {
+        "Hyrule" : "Hyrule",
+        "Link" : "Link",
+        "Rupee" : "Rupee",
+        "Zelda" : "Zelda"
+      }
+    },
+    {
+      "expected" : "Bạn là người dịch hội thoại trò chơi điện tử từ tiếng Anh sang tiếng Việt.\n- Dịch tự nhiên, đúng giọng nhân vật, ngắn gọn để làm phụ đề.\n- Giữ nguyên tên riêng theo bảng thuật ngữ bên dưới.\n- Văn bản là kết quả OCR, có thể sai vài ký tự; hãy đoán nghĩa hợp lý.\n- Chỉ trả về bản dịch, không giải thích.\n\nThuật ngữ:\nApple = Táo\nZelda = Công chúa Zelda\n_x = y\napple = táo\nzelda = Zelda\nÉbène = Gỗ mun",
+      "glossary" : {
+        "_x" : "y",
+        "apple" : "táo",
+        "Apple" : "Táo",
+        "Ébène" : "Gỗ mun",
+        "zelda" : "Zelda",
+        "Zelda" : "Công chúa Zelda"
+      }
+    }
+  ],
+  "userContent" : [
+    {
+      "context" : [
+
+      ],
+      "expected" : "Câu cần dịch:\nThe kingdom needs you now more than ever, Link.",
+      "text" : "The kingdom needs you now more than ever, Link."
+    },
+    {
+      "context" : [
+        {
+          "source" : "Hello there.",
+          "target" : "Xin chào."
+        }
+      ],
+      "expected" : "Các câu trước (chỉ để tham khảo ngữ cảnh):\nEN: Hello there.\nVI: Xin chào.\n\nCâu cần dịch:\nThe kingdom needs you now more than ever, Link.",
+      "text" : "The kingdom needs you now more than ever, Link."
+    },
+    {
+      "context" : [
+        {
+          "source" : "Where is the temple?",
+          "target" : "Ngôi đền ở đâu?"
+        },
+        {
+          "source" : "Go north.",
+          "target" : "Đi về phía bắc."
+        },
+        {
+          "source" : "Thanks!",
+          "target" : "Cảm ơn!"
+        }
+      ],
+      "expected" : "Các câu trước (chỉ để tham khảo ngữ cảnh):\nEN: Where is the temple?\nVI: Ngôi đền ở đâu?\nEN: Go north.\nVI: Đi về phía bắc.\nEN: Thanks!\nVI: Cảm ơn!\n\nCâu cần dịch:\nThe kingdom needs you now more than ever, Link.",
+      "text" : "The kingdom needs you now more than ever, Link."
+    }
+  ]
+}

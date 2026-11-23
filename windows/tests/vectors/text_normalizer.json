@@ -1,0 +1,203 @@
+{
+  "_generatedBy" : "macos/Packages/TranslatorCore/Tests/TranslatorCoreTests/VectorExportTests.swift",
+  "characterErrorRate" : [
+    {
+      "actual" : "abcd",
+      "cer" : 0,
+      "expected" : "abcd"
+    },
+    {
+      "actual" : "abxd",
+      "cer" : 0.25,
+      "expected" : "abcd"
+    },
+    {
+      "actual" : "",
+      "cer" : 0,
+      "expected" : ""
+    },
+    {
+      "actual" : "x",
+      "cer" : 1,
+      "expected" : ""
+    },
+    {
+      "actual" : "",
+      "cer" : 1,
+      "expected" : "hello"
+    }
+  ],
+  "isSameSentenceDefaultThreshold" : 0.92000000000000004,
+  "normalize" : [
+    {
+      "expected" : "Hello there, traveler.",
+      "input" : "Hello   there,\n  traveler. \n"
+    },
+    {
+      "expected" : "I think we should go",
+      "input" : "| think we should go"
+    },
+    {
+      "expected" : "Well, that was close",
+      "input" : "Wel|, that was close"
+    },
+    {
+      "expected" : "Take this sword.",
+      "input" : "Take this sword. ▼"
+    },
+    {
+      "expected" : null,
+      "input" : "Hi"
+    },
+    {
+      "expected" : null,
+      "input" : "1234 !!"
+    },
+    {
+      "expected" : null,
+      "input" : "  \n "
+    },
+    {
+      "expected" : null,
+      "input" : ""
+    },
+    {
+      "expected" : "I'm not sure. I will go.",
+      "input" : "l'm not sure. l will go."
+    },
+    {
+      "expected" : "I'll be there and I've seen it, I'd say",
+      "input" : "l'll be there and l've seen it, l'd say"
+    },
+    {
+      "expected" : "The kingdom needs you now more than ever, Link. Go to the temple and find the sage.",
+      "input" : "The kingdom needs you now more than ever, Link.\nGo to the temple and find the sage. ►"
+    },
+    {
+      "expected" : "Press A to continue",
+      "input" : "Press  A  to continue >"
+    },
+    {
+      "expected" : "Embry: Oh, I think it sounds fascinating!",
+      "input" : "Embry: Oh, I think it sounds\r\nfascinating!  »"
+    },
+    {
+      "expected" : "• Mighty Cucco South Akkala Stable Penn",
+      "input" : "• Mighty Cucco\nSouth Akkala Stable\nPenn"
+    },
+    {
+      "expected" : "|t's a |ong way I",
+      "input" : "|t's a |ong way |"
+    },
+    {
+      "expected" : "Ünïcödé text: café, naïve, Æsir",
+      "input" : "Ünïcödé text: café, naïve, Æsir"
+    },
+    {
+      "expected" : "ABC",
+      "input" : "ABC"
+    },
+    {
+      "expected" : "ab1",
+      "input" : "ab1"
+    },
+    {
+      "expected" : "...a",
+      "input" : "...a"
+    },
+    {
+      "expected" : "Line one Line two with tabs",
+      "input" : "Line one\n\n\nLine two\t\twith tabs"
+    },
+    {
+      "expected" : "He said \"go!\"",
+      "input" : "He said \"go!\" ▼▼"
+    }
+  ],
+  "similarity" : [
+    {
+      "a" : "kitten",
+      "b" : "sitting",
+      "isSameSentence" : false,
+      "levenshtein" : 3,
+      "similarity" : 0.5714285714285714
+    },
+    {
+      "a" : "",
+      "b" : "",
+      "isSameSentence" : true,
+      "levenshtein" : 0,
+      "similarity" : 1
+    },
+    {
+      "a" : "abc",
+      "b" : "",
+      "isSameSentence" : false,
+      "levenshtein" : 3,
+      "similarity" : 0
+    },
+    {
+      "a" : "",
+      "b" : "abc",
+      "isSameSentence" : false,
+      "levenshtein" : 3,
+      "similarity" : 0
+    },
+    {
+      "a" : "Welcome to Hyrule, traveler!",
+      "b" : "Welcome to Hyrule, traveler!",
+      "isSameSentence" : true,
+      "levenshtein" : 0,
+      "similarity" : 1
+    },
+    {
+      "a" : "Welcome to Hyrule, traveler!",
+      "b" : "welcome to hyrule, traveler!",
+      "isSameSentence" : true,
+      "levenshtein" : 2,
+      "similarity" : 0.9285714285714286
+    },
+    {
+      "a" : "Welcome to Hyrule",
+      "b" : "Goodbye and good luck",
+      "isSameSentence" : false,
+      "levenshtein" : 17,
+      "similarity" : 0.19047619047619047
+    },
+    {
+      "a" : "The kingdom needs you now more than ever, Link.",
+      "b" : "The kingdom needs you now more than ever, Llnk.",
+      "isSameSentence" : true,
+      "levenshtein" : 1,
+      "similarity" : 0.97872340425531912
+    },
+    {
+      "a" : "Take this sword.",
+      "b" : "Take this sword!",
+      "isSameSentence" : true,
+      "levenshtein" : 1,
+      "similarity" : 0.9375
+    },
+    {
+      "a" : "I'm not sure.",
+      "b" : "l'm not sure.",
+      "isSameSentence" : true,
+      "levenshtein" : 1,
+      "similarity" : 0.92307692307692313
+    },
+    {
+      "a" : "café",
+      "b" : "cafe",
+      "isSameSentence" : false,
+      "levenshtein" : 1,
+      "similarity" : 0.75
+    },
+    {
+      "a" : "Æsir",
+      "b" : "æsir",
+      "isSameSentence" : true,
+      "levenshtein" : 1,
+      "similarity" : 0.75
+    }
+  ]
+}

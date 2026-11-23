@@ -1,0 +1,618 @@
+{
+  "_generatedBy" : "macos/Packages/TranslatorCore/Tests/TranslatorCoreTests/VectorExportTests.swift",
+  "_note" : "expected = Profile sau khi đọc rồi ghi lại (khóa sắp xếp). So sánh theo cấu trúc JSON, số thực có sai số 1e-9",
+  "builtIns" : {
+    "default" : {
+      "detector" : {
+        "changeThreshold" : 2,
+        "hideDelayMs" : 800,
+        "sampleEveryNFrames" : 15,
+        "stableMs" : 350
+      },
+      "extraRegions" : [
+
+      ],
+      "glossary" : {
+
+      },
+      "id" : "default",
+      "name" : "Mặc định",
+      "ocr" : {
+        "contrast" : 1.2,
+        "invert" : false,
+        "level" : "accurate",
+        "minimumTextHeight" : 0.029999999999999999,
+        "scale" : 2
+      },
+      "region" : {
+        "height" : 0.22,
+        "width" : 0.80000000000000004,
+        "x" : 0.10000000000000001,
+        "y" : 0.71999999999999997
+      },
+      "subtitle" : {
+        "alignment" : "center",
+        "backgroundOpacity" : 0.59999999999999998,
+        "fontSize" : 28,
+        "freeX" : 0.5,
+        "freeY" : 0.84999999999999998,
+        "maxLines" : 12,
+        "position" : "above"
+      },
+      "translate" : {
+        "contextLines" : 3,
+        "geminiModel" : "gemini-flash-lite-latest",
+        "mode" : "geminiWithOfflineFallback",
+        "model" : "claude-haiku-5-5",
+        "provider" : "claude",
+        "requestsPerDay" : 450,
+        "requestsPerMinute" : 12,
+        "upgradeOffline" : true
+      }
+    },
+    "zeldaTOTK" : {
+      "detector" : {
+        "changeThreshold" : 2,
+        "hideDelayMs" : 800,
+        "sampleEveryNFrames" : 15,
+        "stableMs" : 350
+      },
+      "extraRegions" : [
+
+      ],
+      "glossary" : {
+        "Hyrule" : "Hyrule",
+        "Link" : "Link",
+        "Rupee" : "Rupee",
+        "Zelda" : "Zelda"
+      },
+      "id" : "zelda-totk",
+      "name" : "Zelda: Tears of the Kingdom",
+      "ocr" : {
+        "contrast" : 1.2,
+        "invert" : false,
+        "level" : "accurate",
+        "minimumTextHeight" : 0.029999999999999999,
+        "scale" : 2
+      },
+      "region" : {
+        "height" : 0.20000000000000001,
+        "width" : 0.64000000000000001,
+        "x" : 0.17999999999999999,
+        "y" : 0.73999999999999999
+      },
+      "subtitle" : {
+        "alignment" : "center",
+        "backgroundOpacity" : 0.59999999999999998,
+        "fontSize" : 28,
+        "freeX" : 0.5,
+        "freeY" : 0.84999999999999998,
+        "maxLines" : 12,
+        "position" : "above"
+      },
+      "translate" : {
+        "contextLines" : 3,
+        "geminiModel" : "gemini-flash-lite-latest",
+        "mode" : "geminiWithOfflineFallback",
+        "model" : "claude-haiku-5-5",
+        "provider" : "claude",
+        "requestsPerDay" : 450,
+        "requestsPerMinute" : 12,
+        "upgradeOffline" : true
+      }
+    }
+  },
+  "decode" : [
+    {
+      "activeModel" : "claude-haiku-5-5",
+      "allRegions" : [
+        {
+          "height" : 0.22,
+          "width" : 0.80000000000000004,
+          "x" : 0.10000000000000001,
+          "y" : 0.71999999999999997
+        }
+      ],
+      "expected" : {
+        "detector" : {
+          "changeThreshold" : 2,
+          "hideDelayMs" : 800,
+          "sampleEveryNFrames" : 15,
+          "stableMs" : 350
+        },
+        "extraRegions" : [
+
+        ],
+        "glossary" : {
+
+        },
+        "id" : "x",
+        "name" : "x",
+        "ocr" : {
+          "contrast" : 1.2,
+          "invert" : false,
+          "level" : "accurate",
+          "minimumTextHeight" : 0.029999999999999999,
+          "scale" : 2
+        },
+        "region" : {
+          "height" : 0.22,
+          "width" : 0.80000000000000004,
+          "x" : 0.10000000000000001,
+          "y" : 0.71999999999999997
+        },
+        "subtitle" : {
+          "alignment" : "center",
+          "backgroundOpacity" : 0.59999999999999998,
+          "fontSize" : 28,
+          "freeX" : 0.5,
+          "freeY" : 0.84999999999999998,
+          "maxLines" : 12,
+          "position" : "above"
+        },
+        "translate" : {
+          "contextLines" : 3,
+          "geminiModel" : "gemini-flash-lite-latest",
+          "mode" : "geminiWithOfflineFallback",
+          "model" : "claude-haiku-5-5",
+          "provider" : "claude",
+          "requestsPerDay" : 450,
+          "requestsPerMinute" : 12,
+          "upgradeOffline" : true
+        }
+      },
+      "input" : "{\"id\":\"x\"}",
+      "name" : "minimal",
+      "unionRegion" : {
+        "height" : 0.21999999999999997,
+        "width" : 0.80000000000000004,
+        "x" : 0.10000000000000001,
+        "y" : 0.71999999999999997
+      }
+    },
+    {
+      "activeModel" : "claude-haiku-5-5",
+      "allRegions" : [
+        {
+          "height" : 0.20000000000000001,
+          "width" : 0.80000000000000004,
+          "x" : 0.10000000000000001,
+          "y" : 0.69999999999999996
+        }
+      ],
+      "expected" : {
+        "detector" : {
+          "changeThreshold" : 2,
+          "hideDelayMs" : 800,
+          "sampleEveryNFrames" : 15,
+          "stableMs" : 350
+        },
+        "extraRegions" : [
+
+        ],
+        "glossary" : {
+
+        },
+        "id" : "old",
+        "name" : "Old",
+        "ocr" : {
+          "contrast" : 1.2,
+          "invert" : false,
+          "level" : "accurate",
+          "minimumTextHeight" : 0.029999999999999999,
+          "scale" : 2
+        },
+        "region" : {
+          "height" : 0.20000000000000001,
+          "width" : 0.80000000000000004,
+          "x" : 0.10000000000000001,
+          "y" : 0.69999999999999996
+        },
+        "subtitle" : {
+          "alignment" : "center",
+          "backgroundOpacity" : 0.59999999999999998,
+          "fontSize" : 28,
+          "freeX" : 0.5,
+          "freeY" : 0.84999999999999998,
+          "maxLines" : 12,
+          "position" : "above"
+        },
+        "translate" : {
+          "contextLines" : 2,
+          "geminiModel" : "gemini-flash-lite-latest",
+          "mode" : "geminiWithOfflineFallback",
+          "model" : "claude-haiku-5-5",
+          "provider" : "claude",
+          "requestsPerDay" : 450,
+          "requestsPerMinute" : 12,
+          "upgradeOffline" : true
+        }
+      },
+      "input" : "{\"id\":\"old\",\"name\":\"Old\",\"region\":{\"x\":0.1,\"y\":0.7,\"width\":0.8,\"height\":0.2},\"translate\":{\"mode\":\"geminiWithOfflineFallback\",\"model\":\"gemini-flash-lite-latest\",\"contextLines\":2}}",
+      "name" : "legacy_gemini",
+      "unionRegion" : {
+        "height" : 0.19999999999999996,
+        "width" : 0.80000000000000004,
+        "x" : 0.10000000000000001,
+        "y" : 0.69999999999999996
+      }
+    },
+    {
+      "activeModel" : "claude-haiku-5-5",
+      "allRegions" : [
+        {
+          "height" : 0.22,
+          "width" : 0.80000000000000004,
+          "x" : 0.10000000000000001,
+          "y" : 0.71999999999999997
+        }
+      ],
+      "expected" : {
+        "detector" : {
+          "changeThreshold" : 2,
+          "hideDelayMs" : 800,
+          "sampleEveryNFrames" : 15,
+          "stableMs" : 350
+        },
+        "extraRegions" : [
+
+        ],
+        "glossary" : {
+
+        },
+        "id" : "g",
+        "name" : "g",
+        "ocr" : {
+          "contrast" : 1.2,
+          "invert" : false,
+          "level" : "accurate",
+          "minimumTextHeight" : 0.029999999999999999,
+          "scale" : 2
+        },
+        "region" : {
+          "height" : 0.22,
+          "width" : 0.80000000000000004,
+          "x" : 0.10000000000000001,
+          "y" : 0.71999999999999997
+        },
+        "subtitle" : {
+          "alignment" : "center",
+          "backgroundOpacity" : 0.59999999999999998,
+          "fontSize" : 28,
+          "freeX" : 0.5,
+          "freeY" : 0.84999999999999998,
+          "maxLines" : 12,
+          "position" : "above"
+        },
+        "translate" : {
+          "contextLines" : 3,
+          "geminiModel" : "gemini-2.5-flash",
+          "mode" : "geminiOnly",
+          "model" : "claude-haiku-5-5",
+          "provider" : "claude",
+          "requestsPerDay" : 450,
+          "requestsPerMinute" : 12,
+          "upgradeOffline" : true
+        }
+      },
+      "input" : "{\"id\":\"g\",\"translate\":{\"mode\":\"geminiOnly\",\"model\":\"gemini-2.5-flash\"}}",
+      "name" : "legacy_gemini_only",
+      "unionRegion" : {
+        "height" : 0.21999999999999997,
+        "width" : 0.80000000000000004,
+        "x" : 0.10000000000000001,
+        "y" : 0.71999999999999997
+      }
+    },
+    {
+      "activeModel" : "gemini-pro-latest",
+      "allRegions" : [
+        {
+          "height" : 0.20000000000000001,
+          "width" : 0.64000000000000001,
+          "x" : 0.17999999999999999,
+          "y" : 0.73999999999999999
+        },
+        {
+          "height" : 0.050000000000000003,
+          "width" : 0.10000000000000001,
+          "x" : 0.20000000000000001,
+          "y" : 0.59999999999999998
+        }
+      ],
+      "expected" : {
+        "detector" : {
+          "changeThreshold" : 6,
+          "hideDelayMs" : 900,
+          "sampleEveryNFrames" : 10,
+          "stableMs" : 400
+        },
+        "extraRegions" : [
+          {
+            "height" : 0.050000000000000003,
+            "width" : 0.10000000000000001,
+            "x" : 0.20000000000000001,
+            "y" : 0.59999999999999998
+          }
+        ],
+        "glossary" : {
+          "Link" : "Link"
+        },
+        "id" : "full",
+        "name" : "Full",
+        "ocr" : {
+          "contrast" : 1.5,
+          "invert" : true,
+          "level" : "fast",
+          "minimumTextHeight" : 0.050000000000000003,
+          "scale" : 3
+        },
+        "region" : {
+          "height" : 0.20000000000000001,
+          "width" : 0.64000000000000001,
+          "x" : 0.17999999999999999,
+          "y" : 0.73999999999999999
+        },
+        "subtitle" : {
+          "alignment" : "justified",
+          "backgroundOpacity" : 0.29999999999999999,
+          "fontSize" : 32,
+          "freeX" : 0.40000000000000002,
+          "freeY" : 0.80000000000000004,
+          "maxLines" : 30,
+          "position" : "free"
+        },
+        "translate" : {
+          "contextLines" : 4,
+          "geminiModel" : "gemini-pro-latest",
+          "mode" : "offlineOnly",
+          "model" : "claude-sonnet-5-5",
+          "provider" : "gemini",
+          "requestsPerDay" : 1000,
+          "requestsPerMinute" : 30,
+          "upgradeOffline" : false
+        }
+      },
+      "input" : "{\"id\":\"full\",\"name\":\"Full\",\"region\":{\"x\":0.18,\"y\":0.74,\"width\":0.64,\"height\":0.2},\"extraRegions\":[{\"x\":0.2,\"y\":0.6,\"width\":0.1,\"height\":0.05}],\"ocr\":{\"level\":\"fast\",\"scale\":3,\"invert\":true,\"contrast\":1.5,\"minimumTextHeight\":0.05},\"detector\":{\"sampleEveryNFrames\":10,\"changeThreshold\":6,\"stableMs\":400,\"hideDelayMs\":900},\"translate\":{\"mode\":\"offlineOnly\",\"provider\":\"gemini\",\"model\":\"claude-sonnet-5-5\",\"geminiModel\":\"gemini-pro-latest\",\"contextLines\":4,\"requestsPerMinute\":30,\"requestsPerDay\":1000,\"upgradeOffline\":false},\"subtitle\":{\"position\":\"free\",\"fontSize\":32,\"freeX\":0.4,\"freeY\":0.8,\"backgroundOpacity\":0.3,\"alignment\":\"justified\",\"maxLines\":40},\"glossary\":{\"Link\":\"Link\"}}",
+      "name" : "full",
+      "unionRegion" : {
+        "height" : 0.33999999999999997,
+        "width" : 0.64000000000000012,
+        "x" : 0.17999999999999999,
+        "y" : 0.59999999999999998
+      }
+    },
+    {
+      "activeModel" : "claude-haiku-5-5",
+      "allRegions" : [
+        {
+          "height" : 0.22,
+          "width" : 0.80000000000000004,
+          "x" : 0.10000000000000001,
+          "y" : 0.71999999999999997
+        }
+      ],
+      "expected" : {
+        "detector" : {
+          "changeThreshold" : 2,
+          "hideDelayMs" : 800,
+          "sampleEveryNFrames" : 15,
+          "stableMs" : 350
+        },
+        "extraRegions" : [
+
+        ],
+        "glossary" : {
+
+        },
+        "id" : "m",
+        "name" : "m",
+        "ocr" : {
+          "contrast" : 1.2,
+          "invert" : false,
+          "level" : "accurate",
+          "minimumTextHeight" : 0.029999999999999999,
+          "scale" : 2
+        },
+        "region" : {
+          "height" : 0.22,
+          "width" : 0.80000000000000004,
+          "x" : 0.10000000000000001,
+          "y" : 0.71999999999999997
+        },
+        "subtitle" : {
+          "alignment" : "center",
+          "backgroundOpacity" : 0.59999999999999998,
+          "fontSize" : 28,
+          "freeX" : 0.5,
+          "freeY" : 0.84999999999999998,
+          "maxLines" : 1,
+          "position" : "above"
+        },
+        "translate" : {
+          "contextLines" : 3,
+          "geminiModel" : "gemini-flash-lite-latest",
+          "mode" : "geminiWithOfflineFallback",
+          "model" : "claude-haiku-5-5",
+          "provider" : "claude",
+          "requestsPerDay" : 450,
+          "requestsPerMinute" : 12,
+          "upgradeOffline" : true
+        }
+      },
+      "input" : "{\"id\":\"m\",\"subtitle\":{\"maxLines\":0}}",
+      "name" : "max_lines_low",
+      "unionRegion" : {
+        "height" : 0.21999999999999997,
+        "width" : 0.80000000000000004,
+        "x" : 0.10000000000000001,
+        "y" : 0.71999999999999997
+      }
+    },
+    {
+      "activeModel" : "claude-haiku-5-5",
+      "allRegions" : [
+        {
+          "height" : 0.22,
+          "width" : 0.80000000000000004,
+          "x" : 0.10000000000000001,
+          "y" : 0.71999999999999997
+        }
+      ],
+      "expected" : {
+        "detector" : {
+          "changeThreshold" : 2,
+          "hideDelayMs" : 800,
+          "sampleEveryNFrames" : 15,
+          "stableMs" : 350
+        },
+        "extraRegions" : [
+
+        ],
+        "glossary" : {
+
+        },
+        "id" : "u",
+        "name" : "u",
+        "ocr" : {
+          "contrast" : 1.2,
+          "invert" : false,
+          "level" : "accurate",
+          "minimumTextHeight" : 0.029999999999999999,
+          "scale" : 2
+        },
+        "region" : {
+          "height" : 0.22,
+          "width" : 0.80000000000000004,
+          "x" : 0.10000000000000001,
+          "y" : 0.71999999999999997
+        },
+        "subtitle" : {
+          "alignment" : "center",
+          "backgroundOpacity" : 0.59999999999999998,
+          "fontSize" : 28,
+          "freeX" : 0.5,
+          "freeY" : 0.84999999999999998,
+          "maxLines" : 12,
+          "position" : "below"
+        },
+        "translate" : {
+          "contextLines" : 3,
+          "geminiModel" : "gemini-flash-lite-latest",
+          "mode" : "geminiWithOfflineFallback",
+          "model" : "claude-haiku-5-5",
+          "provider" : "claude",
+          "requestsPerDay" : 450,
+          "requestsPerMinute" : 12,
+          "upgradeOffline" : true
+        }
+      },
+      "input" : "{\"id\":\"u\",\"futureKey\":123,\"subtitle\":{\"position\":\"below\",\"somethingNew\":true}}",
+      "name" : "unknown_keys_ignored",
+      "unionRegion" : {
+        "height" : 0.21999999999999997,
+        "width" : 0.80000000000000004,
+        "x" : 0.10000000000000001,
+        "y" : 0.71999999999999997
+      }
+    }
+  ],
+  "providers" : [
+    {
+      "keyPlaceholder" : "Dán API key từ console.anthropic.com",
+      "presets" : [
+        {
+          "id" : "claude-haiku-5-5",
+          "title" : "Claude Haiku 5.5 · nhanh, rẻ nhất"
+        },
+        {
+          "id" : "claude-sonnet-5-5",
+          "title" : "Claude Sonnet 5.5 · cân bằng"
+        },
+        {
+          "id" : "claude-opus-5-5",
+          "title" : "Claude Opus 5.5 · chất lượng cao nhất"
+        }
+      ],
+      "provider" : "claude",
+      "title" : "Claude (Anthropic)"
+    },
+    {
+      "keyPlaceholder" : "Dán API key từ Google AI Studio",
+      "presets" : [
+        {
+          "id" : "gemini-flash-lite-latest",
+          "title" : "Gemini Flash-Lite · nhanh, rẻ"
+        },
+        {
+          "id" : "gemini-flash-latest",
+          "title" : "Gemini Flash · cân bằng"
+        },
+        {
+          "id" : "gemini-pro-latest",
+          "title" : "Gemini Pro · chất lượng cao"
+        }
+      ],
+      "provider" : "gemini",
+      "title" : "Gemini (Google)"
+    }
+  ],
+  "regionClamped" : [
+    {
+      "expected" : {
+        "height" : 0.01,
+        "width" : 1,
+        "x" : 0,
+        "y" : 0.98999999999999999
+      },
+      "input" : {
+        "height" : -1,
+        "width" : 2,
+        "x" : -0.20000000000000001,
+        "y" : 1.5
+      }
+    },
+    {
+      "expected" : {
+        "height" : 0.5,
+        "width" : 0.5,
+        "x" : 0.5,
+        "y" : 0.5
+      },
+      "input" : {
+        "height" : 0.80000000000000004,
+        "width" : 0.80000000000000004,
+        "x" : 0.5,
+        "y" : 0.5
+      }
+    },
+    {
+      "expected" : {
+        "height" : 0.010000000000000009,
+        "width" : 0.010000000000000009,
+        "x" : 0.98999999999999999,
+        "y" : 0.98999999999999999
+      },
+      "input" : {
+        "height" : 0.5,
+        "width" : 0.5,
+        "x" : 0.98999999999999999,
+        "y" : 0.98999999999999999
+      }
+    },
+    {
+      "expected" : {
+        "height" : 0.40000000000000002,
+        "width" : 0.29999999999999999,
+        "x" : 0.10000000000000001,
+        "y" : 0.20000000000000001
+      },
+      "input" : {
+        "height" : 0.40000000000000002,
+        "width" : 0.29999999999999999,
+        "x" : 0.10000000000000001,
+        "y" : 0.20000000000000001
+      }
+    }
+  ]
+}
