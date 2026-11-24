@@ -72,7 +72,7 @@ Bản Windows lấy hành vi hiện tại của bản macOS làm chuẩn, không
 | OCR mặc định | `Windows.Media.Ocr` (WinRT, có sẵn) | Không cần cài thêm |
 | OCR chính xác hơn (tùy chọn) | PaddleOCR (PP-OCR tiếng Anh) qua ONNX Runtime + DirectML | Chạy trên GPU người dùng chọn, tốt hơn với font game |
 | Dịch online | Claude: SDK C# chính thức của Anthropic (gói NuGet, kiểm tra tên gói khi làm); Gemini: REST bằng `HttpClient` | Giữ đúng tham số như bản macOS |
-| Dịch offline | Windows không có API dịch offline có sẵn. Bản 1.0 chỉ có online + hiện chữ gốc khi lỗi; model cục bộ để giai đoạn mở rộng | Xem mục 9 |
+| Dịch offline | Windows không có API dịch offline có sẵn. Đã làm bằng NLLB-200 qua host Python do app tự cài (xem [PLAN_NLLB_LOCAL.md](PLAN_NLLB_LOCAL.md)); chưa cài thì hiện chữ gốc | Xem mục 9 |
 | Cache | SQLite qua `Microsoft.Data.Sqlite`, schema trùng bản macOS | Dùng chung được file cache |
 | Lưu API key | Windows Credential Manager (`CredWriteW`, target `KGameTranslator/claude`, `KGameTranslator/gemini`) | Tương đương Keychain |
 | Đóng gói | `dotnet publish -r win-x64` / `win-arm64`, self-contained, single-file, ReadyToRun → NSIS (`makensis`) + `.zip`, chạy bằng `build_release.ps1` trên Windows | Giống KVietKey |

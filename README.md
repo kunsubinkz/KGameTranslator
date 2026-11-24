@@ -9,7 +9,7 @@ Chơi game console qua **capture card USB**, app hiện hình game kèm **phụ 
 | Công nghệ | Swift, SwiftUI/AppKit, Metal | C# .NET 10, Avalonia UI, Direct3D 11 + Direct2D |
 | Nhận hình | AVFoundation | Media Foundation (giải mã MJPEG/H.264 bằng GPU) |
 | OCR | Apple Vision | Windows OCR (`Windows.Media.Ocr`) |
-| Dịch offline | Apple Translation | Chưa có (không dịch được thì hiện chữ gốc) |
+| Dịch offline | Apple Translation | NLLB-200 chạy trên máy qua host Python do app tự cài (Intel Arc, NVIDIA hoặc CPU); chưa cài thì hiện chữ gốc |
 | Lưu API key | Keychain | Windows Credential Manager |
 | Cách phát hành | ZIP + DMG | Bộ cài NSIS (cài theo người dùng, không cần admin) + bản portable `.zip` |
 | Tình trạng | 1.0.0, dùng ổn định | 1.0.0, đã chạy thử trên Windows 11 x64 với capture card UGREEN; ARM64 mới build, chưa chạy thử; chưa ký số |
@@ -40,7 +40,7 @@ Tài liệu từng bản: [windows/README.md](windows/README.md) (cài đặt, d
 | OCR | Apple Vision | Windows OCR, có thêm tự cân sáng cho vùng bị tối (Switch tự giảm sáng) |
 | Xuống dòng theo đoạn | Nối mọi dòng OCR thành một đoạn | Giữ ranh giới đoạn (tiêu đề, tên nhân vật, nội dung) và dặn model dịch mỗi đoạn một dòng |
 | Chỉnh phụ đề nhanh | Hồ sơ game > Phụ đề | Nút "Phụ đề" (Ctrl+L) cạnh nút Dịch, chỉnh là thấy ngay trên video |
-| Dịch offline | Có (Apple Translation) | Chưa có |
+| Dịch offline | Có (Apple Translation, có sẵn trong hệ thống) | Có (NLLB-200, cần cài Python + PyTorch + model vài GB trong app, Ctrl+Shift+M; license model phi thương mại; chưa đo thực tế trên máy thật) |
 | Ngôn ngữ giao diện | Tiếng Việt | Tiếng Việt |
 
 ## Cài đặt và build
