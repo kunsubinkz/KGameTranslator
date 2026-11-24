@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/GameTranslator.Core/GameTranslator.Core.csproj" />
+    <Project Path="src/GameTranslator.Platform.Windows/GameTranslator.Platform.Windows.csproj" />
+    <Project Path="src/GameTranslator.App/GameTranslator.App.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/GameTranslator.Core.Tests/GameTranslator.Core.Tests.csproj" />
+    <Project Path="tests/GameTranslator.Windows.Tests/GameTranslator.Windows.Tests.csproj" />
+  </Folder>
+</Solution>

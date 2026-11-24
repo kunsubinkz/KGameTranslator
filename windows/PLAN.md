@@ -10,23 +10,34 @@ Tài liệu tham chiếu:
 
 ## 0. Trạng thái thực hiện
 
-Cập nhật 2026-11-23: mới xong giai đoạn 1 (làm trên Mac). Các giai đoạn còn lại làm trên Windows.
+Cập nhật 2026-11-24: app Windows chạy được từ đầu đến cuối và đã build ra bộ cài. Máy dev: Core i5-14600K, Intel Arc B580 + UHD 770, capture card UGREEN-25854 (đang cắm, nhưng lúc thử chưa có tín hiệu game nên chỉ nhận khung đen 25 fps).
 
 | Giai đoạn | Trạng thái |
 |---|---|
-| 0. Chuẩn bị (máy Windows) | Chưa làm |
-| 1. Test vector từ Swift | **Xong** (7 file trong `tests/vectors/`, xuất bằng `VectorExportTests.swift`) |
-| 2. Core C# | Chưa làm |
-| 3. Capture + hiển thị GPU | Chưa làm |
-| 4. Pipeline OCR + dịch | Chưa làm |
-| 5. Giao diện Avalonia | Chưa làm |
-| 6. Đóng gói | Chưa làm |
-| 7. Kiểm thử trên Windows | Chưa làm |
+| 0. Chuẩn bị (máy Windows) | **Xong**: .NET SDK 10.0.404, NSIS 3.13; OCR tiếng Anh có sẵn; capture card nhận diện đúng (1080p 60 fps NV12 thô) |
+| 1. Test vector từ Swift | **Xong** (7 file trong `tests/vectors/`) |
+| 2. Core C# | **Xong**: 39/39 test (100% vector + `PipelineCoordinator` với OCR/dịch giả) |
+| 3. Capture + hiển thị GPU | **Xong phần kiểm chứng được tự động**: liệt kê GPU, chọn GPU (Tự động/Hiệu năng/Tiết kiệm/cụ thể), đổi GPU khi chạy, 3 chế độ phóng, phụ đề Direct2D, mất device tự dựng lại, thu hình MF, tiếng WASAPI. `--selftest` đạt trên cả Arc B580 và UHD 770 (đọc lại ảnh đúng hướng). **Chưa kiểm chứng**: 60 fps thật, cảm giác tay cầm so với OBS, tiếng khớp hình (cần bật Switch) |
+| 4. Pipeline OCR + dịch | **Xong**: Windows OCR (CER 0% trên ảnh mẫu, ~8–30 ms), nhiều vùng, kiểm tra hiện diện 600 ms, ẩn khi chờ dịch, cache, phụ đề căn trái/giữa/phải/đều. Chạy `--demo` 60 fps, CPU ~1%. **Chưa kiểm chứng**: dịch thật với Claude/Gemini (cần API key của bạn), độ chính xác OCR trên font game thật |
+| 5. Giao diện Avalonia | **Xong**: cửa sổ chính, chọn vùng nhiều vùng, cài đặt (5 tab), lịch sử (sửa, dịch lại AI, xuất CSV), hồ sơ game. `--render-ui` xuất PNG. Giao diện làm bằng mã C# (không AXAML) |
+| 6. Đóng gói | **Xong**: `build_release.ps1` ra bộ cài NSIS + zip portable cho x64 và ARM64 + `SHA256SUMS`. Đã cài thử im lặng, chạy `--selftest` từ bản cài, gỡ sạch (x64). ARM64 chỉ build được, chưa chạy thử |
+| 7. Kiểm thử trên Windows | **Một phần**: 10 test Windows (GPU, OCR, Credential, chọn định dạng). Ma trận thủ công (Optimus, 4K/DPI, Bluetooth, rút/cắm, so OBS...) chưa làm |
 
 Khác với kế hoạch ban đầu:
 
 - Phát triển trên Windows thay vì build chéo từ macOS. Script đóng gói là `build_release.ps1`.
-- Shader viết cho Direct3D 11 (Shader Model 5) nên biên dịch bằng `D3DCompile` có sẵn trong Windows, không cần `dxc`.
+- Shader viết cho Direct3D 11 (Shader Model 5), biên dịch **lúc chạy** bằng `D3DCompile` (không còn bước biên dịch lúc build / nhúng `.cso`) vì chỉ có 1 shader nhỏ.
+- Thu hình (cập nhật sau khi thử với UGREEN-25854 + Arc B580): Source Reader **đồng bộ** trên luồng riêng (MMCSS). Định dạng thô NV12/YUY2 được tải thẳng lên GPU và đổi màu bằng shader (BT.709/601, dải giới hạn); MJPEG/H.264 được **GPU giải mã (DXVA)** bằng chung device với renderer, khung là texture NV12 trong VRAM, chép GPU→GPU (đo được: 60 fps, CPU 0,3% so với 3,9% khi CPU giải mã). Luồng capture không bao giờ chờ GPU: renderer có luồng vẽ riêng chờ swap chain rồi vẽ **khung mới nhất** (mô hình hộp thư). Chỉ đọc khung về CPU khi OCR cần (vài lần/giây). Mặt phẳng UV của NV12 tính theo kích thước bộ đệm thật (card có thể đệm 1080 → 1088 dòng).
+- Đồng bộ dọc bật mặc định (tắt thì thỉnh thoảng thấy dải xé ngang giữa màn hình). Dịch bật mặc định như bản macOS (bản đầu tắt, khiến người dùng tưởng app không dịch).
+- Tiền xử lý OCR có thêm **tự cân sáng** khi vùng bị tối (Switch tự giảm sáng, chữ màu trên nền tối): kéo giãn dải sáng theo kênh sáng nhất. Thử trên khung thật bị làm tối: không cân sáng thì OCR không đọc được gì, có cân sáng thì đọc đúng cả đoạn.
+- "Mịn 4K" = **AMD FSR 1 (EASU + RCAS, MIT)** viết lại trong shader, thêm pass **FXAA** ở độ phân giải gốc (khử răng cưa có sẵn trong hình Switch) trước khi phóng; texture trung gian 10 bit. Đo 1080p → 4K: Arc B580 ~2,5 ms/khung, UHD 770 ~15–20 ms/khung nên có cơ chế tự lùi về song tuyến khi GPU đo được > 12 ms/khung (timestamp query). Khi thu nhỏ vẫn dùng Catmull-Rom. Mặc định đổi sang Mịn 4K (cài đặt v4). Chưa có "Siêu phân giải của GPU" (NVIDIA RTX VSR / Intel VSR). `--upscale-test` và `--upscale-perf` để so ảnh và đo.
+- Tiền xử lý ảnh OCR (phóng, đảo màu, tương phản) làm bằng CPU trên ảnh vùng nhỏ thay vì Direct2D effects.
+- Chưa làm (để giai đoạn mở rộng): PaddleOCR + DirectML, DirectShow dự phòng, dịch offline, giao diện tiếng Anh (hiện chỉ tiếng Việt), `CM_Register_Notification` (thay bằng tự thử mở lại capture mỗi ~3 giây), đo GPU % trên thanh trạng thái (hiện tên GPU), file thiết kế `Game Translator Windows - Giao diện.html`.
+- Dịch offline chưa có nên chế độ "dự phòng offline" hiện chữ gốc khi không dịch online được; `FallbackTranslator` vẫn giữ chỗ cho bộ dịch offline sau này.
+- Mở shell mới sau khi cài .NET để `dotnet` có trong PATH.
+- `Microsoft.Data.Sqlite` kéo theo `SQLitePCLRaw.lib.e_sqlite3` 2.1.11 có lỗ hổng (NU1903): đã ghim trực tiếp bản 2.1.14.
+- Khóa cache **không** chuẩn hóa NFC (kế hoạch ghi có): Swift không chuẩn hóa, và để dùng chung file cache với bản Mac thì hash phải giống từng byte. Chữ thường dùng `SwiftLowercase` (İ → i̇ cho khớp Swift).
+- Exe publish là single-file tự giải nén thư viện native, ~200 MB chưa nén (bộ cài ~50 MB).
 
 ## 1. Những gì bản macOS đã có (phải giữ nguyên hành vi)
 

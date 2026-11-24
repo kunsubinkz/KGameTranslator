@@ -1,0 +1,80 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="GameTranslator.App.App"
+             RequestedThemeVariant="Dark">
+  <Application.Resources>
+    <!-- Màu nhấn xanh của bản thiết kế, không theo màu nhấn của Windows (máy dùng màu đỏ thì nút Lưu, thanh trượt cũng đỏ) -->
+    <Color x:Key="SystemAccentColor">#2F7BFF</Color>
+    <Color x:Key="SystemAccentColorDark1">#2466D6</Color>
+    <Color x:Key="SystemAccentColorDark2">#1B52B0</Color>
+    <Color x:Key="SystemAccentColorDark3">#133E8A</Color>
+    <Color x:Key="SystemAccentColorLight1">#4A8DFF</Color>
+    <Color x:Key="SystemAccentColorLight2">#6FA4FF</Color>
+    <Color x:Key="SystemAccentColorLight3">#94BCFF</Color>
+  </Application.Resources>
+  <Application.Styles>
+    <FluentTheme />
+
+    <!-- Thanh công cụ kiểu bản thiết kế: nút dạng viên thuốc bo góc trên nền tối -->
+    <Style Selector="Button.tool, ToggleButton.tool">
+      <Setter Property="Background" Value="#3B3B42" />
+      <Setter Property="Foreground" Value="#ECECF0" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="Height" Value="36" />
+      <Setter Property="Padding" Value="12,0" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style Selector="Button.tool:pointerover /template/ ContentPresenter#PART_ContentPresenter, ToggleButton.tool:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="#4A4A53" />
+      <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style Selector="Button.tool:pressed /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="#55555F" />
+    </Style>
+    <Style Selector="Button.outline">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="#5A5A64" />
+      <Setter Property="BorderThickness" Value="1" />
+    </Style>
+    <Style Selector="Button.outline:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="#3B3B42" />
+      <Setter Property="BorderBrush" Value="#7A7A86" />
+    </Style>
+    <Style Selector="ToggleButton.tool:checked /template/ ContentPresenter#PART_ContentPresenter, ToggleButton.tool:checked:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="#2F7BFF" />
+      <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style Selector="ComboBox.tool">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Foreground" Value="#ECECF0" />
+      <Setter Property="Height" Value="36" />
+      <Setter Property="Padding" Value="4,0,10,0" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style Selector="ComboBox.tool:pointerover /template/ Border#Background, ComboBox.tool:focus /template/ Border#Background, ComboBox.tool:pressed /template/ Border#Background">
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="TextBlock.icon">
+      <Setter Property="FontFamily" Value="Segoe Fluent Icons, Segoe MDL2 Assets" />
+      <Setter Property="FontSize" Value="15" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <!-- Nút chính (Lưu...) màu xanh như bản thiết kế, không theo màu nhấn của Windows -->
+    <Style Selector="Button.accent">
+      <Setter Property="Background" Value="#2F7BFF" />
+      <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style Selector="Button.accent:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="#4A8DFF" />
+      <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style Selector="Button.accent:pressed /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="#2466D6" />
+    </Style>
+    <Style Selector="TabItem">
+      <Setter Property="FontSize" Value="15" />
+    </Style>
+  </Application.Styles>
+</Application>
