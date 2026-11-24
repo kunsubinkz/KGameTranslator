@@ -12,7 +12,7 @@ Lấy file trong `artifacts/` (sau khi chạy `build_release.ps1`):
 | `GameTranslator-<ver>-arm64-setup.exe` | Windows ARM (Snapdragon X) |
 | `GameTranslator-<ver>-<arch>-portable.zip` | Không cài: giải nén chạy luôn, dữ liệu nằm trong thư mục `data\` cạnh exe |
 
-Bộ cài chạy theo từng người dùng (không cần quyền admin), cài vào `%LOCALAPPDATA%\Programs\GameTranslator`. Gỡ cài đặt giữ lại hồ sơ game, cache và API key.
+Bộ cài chạy theo từng người dùng (không cần quyền admin), cài vào `%LOCALAPPDATA%\Programs\GameTranslator`. Gỡ cài đặt giữ lại hồ sơ game, cache và API key; riêng dữ liệu dịch offline (Python, PyTorch, model, vài GB) thì bộ gỡ sẽ hỏi có xóa không.
 
 > Exe chưa ký số nên SmartScreen có thể cảnh báo ("Windows protected your PC"): chọn **More info → Run anyway**. Muốn ký: đặt `SIGN_CERT` (đường dẫn .pfx) và `SIGN_PASSWORD` trước khi chạy `build_release.ps1`.
 
@@ -21,22 +21,37 @@ Bộ cài chạy theo từng người dùng (không cần quyền admin), cài v
 - Windows 10 (19041) trở lên, x64 hoặc ARM64.
 - Gói OCR tiếng Anh: Settings > Time & language > Language & region > thêm English (United States).
 - Camera: bật Settings > Privacy & security > Camera > "Let desktop apps access your camera".
-- API key Claude hoặc Gemini: nhập trong **Cài đặt > Dịch** (lưu trong Windows Credential Manager, không ghi ra file).
+- API key Claude hoặc Gemini: nhập trong **Cài đặt > Dịch** (lưu trong Windows Credential Manager, không ghi ra file). Không cần nếu chỉ dùng dịch offline.
+- Dịch offline (tùy chọn): vài GB trống ổ đĩa và kết nối mạng ở lần cài đầu để tải Python, PyTorch và model.
 
 ## Dùng nhanh
 
 1. Cắm capture card, bật máy chơi game, mở app. Card hiện trong ô chọn nguồn hình (ưu tiên 1080p 60 fps, định dạng thô).
 2. **Chọn vùng** (Ctrl+R): kéo khung quanh hộp thoại; có thể thêm vùng phụ (ô tên nhân vật).
-3. Nhập API key, bật **Dịch** (Ctrl+T).
+3. Nhập API key (hoặc cài dịch offline, xem bên dưới), bật **Dịch** (Ctrl+T).
 4. Chưa có capture card? Chạy `GameTranslator.exe --demo` để thử với nguồn hình giả.
 
-Phím tắt: Ctrl+T dịch, Ctrl+R chọn vùng, Ctrl+Shift+R dịch lại, Ctrl+O hiện chữ gốc, F11/Alt+Enter toàn màn hình, Ctrl+H lịch sử, Ctrl+L chỉnh nhanh phụ đề, Ctrl+Shift+P hồ sơ game, Ctrl+, cài đặt.
+Phím tắt: Ctrl+T dịch, Ctrl+R chọn vùng, Ctrl+Shift+R dịch lại, Ctrl+O hiện chữ gốc, F11/Alt+Enter toàn màn hình, Ctrl+H lịch sử, Ctrl+L chỉnh nhanh phụ đề, Ctrl+Shift+P hồ sơ game, Ctrl+Shift+M dịch offline (model local), Ctrl+, cài đặt.
 
 ## Dịch offline (NLLB-200 chạy trên máy)
 
-Mở **Ctrl+Shift+M** (hoặc Cài đặt > Dịch > Quản lý model local) rồi bấm **Cài đặt dịch offline**: app tự tải Python + PyTorch (theo card màn hình: Intel Arc, NVIDIA hoặc CPU) và model NLLB-200 về thư mục dữ liệu của app, rồi khởi động một host dịch cục bộ. Không cần cài Python, pip hay model bằng tay; tắt app giữa chừng thì lần sau bấm lại sẽ làm tiếp. Sau đó chọn chế độ dịch "Online, dự phòng offline" hoặc "Chỉ offline" trong Cài đặt > Dịch. Có thể trỏ tới host chạy ở máy khác (cùng giao thức) trong cùng mục đó.
+Mở cửa sổ **Model offline** bằng Ctrl+Shift+M, nút **Offline** trên thanh công cụ, bấm chữ NLLB ở thanh trạng thái, hoặc Cài đặt > Dịch > Quản lý model local.
 
-Lưu ý: NLLB không dùng ngữ cảnh câu trước và từ điển game; bản dịch offline hiện nhãn "offline (NLLB)" và được nâng cấp lên bản online khi còn hạn mức. Model NLLB-200 theo giấy phép **CC-BY-NC 4.0 (phi thương mại)**; app không đóng gói model, người dùng tự tải từ Hugging Face. Chi tiết kỹ thuật: [PLAN_NLLB_LOCAL.md](PLAN_NLLB_LOCAL.md).
+**Cài lần đầu:** chọn card đồ họa (Tự chọn, Intel Arc, NVIDIA hoặc CPU) rồi bấm **Cài đặt dịch offline**. App tự tải Python (bằng `uv` đi kèm), PyTorch đúng loại và model NLLB-200, rồi khởi động host dịch cục bộ. Không cần cài Python, pip hay model bằng tay. Có thể hủy; bấm lại sẽ làm tiếp từ chỗ dừng (file tải dở được giữ và kiểm SHA-256).
+
+**Trong cửa sổ:**
+- Trạng thái host (chưa cài, đang nạp, sẵn sàng, lỗi) và nút bật/tắt/khởi động lại.
+- Mỗi model là một thẻ: kích thước, VRAM cần, nút Dùng / Tải / Xóa / Hủy kèm tiến trình ngay trên thẻ. Có thể đổi thư mục model, nhập model đã có trong cache Hugging Face, hoặc thêm repo tùy ý.
+- Môi trường: chọn thiết bị chạy (GPU/CPU), cài lại, gỡ.
+- Chạy thử và đo tốc độ (ms/câu), cùng nhật ký host.
+
+**Chọn cách dùng** trong Cài đặt (Ctrl+,) > Dịch > **Chế độ dịch** (theo từng hồ sơ game):
+- *Online, dự phòng offline*: dùng Claude/Gemini; lỗi mạng hoặc hết hạn mức thì dịch bằng NLLB, rồi tự nâng cấp lên bản online khi còn hạn mức.
+- *Chỉ offline*: chỉ dùng NLLB, không cần API key và không gửi gì ra mạng.
+
+Host chạy trên 127.0.0.1 với token riêng (lưu trong Credential Manager) và tự tắt khi app thoát. Cũng có thể trỏ tới host chạy ở máy khác (cùng giao thức) trong Cài đặt > Dịch.
+
+Lưu ý: NLLB không dùng ngữ cảnh câu trước và từ điển game, nên chất lượng thấp hơn bản online; bản dịch offline hiện nhãn "offline (NLLB)". Phần cài và chạy host mới được kiểm bằng test tự động với host giả; chưa đo tốc độ trên máy thật, nên hãy dùng `--nllb-selftest` hoặc nút chạy thử để kiểm tra trên máy bạn. Model NLLB-200 theo giấy phép **CC-BY-NC 4.0 (phi thương mại)**; app không đóng gói model, người dùng tự tải từ Hugging Face. Chi tiết kỹ thuật: [PLAN_NLLB_LOCAL.md](PLAN_NLLB_LOCAL.md).
 
 ## Dòng lệnh
 
