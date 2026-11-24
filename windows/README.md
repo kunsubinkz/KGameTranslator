@@ -1,6 +1,6 @@
 # Game Translator cho Windows
 
-Hiện hình game từ capture card UVC kèm phụ đề tiếng Việt (OCR + dịch bằng Claude hoặc Gemini). Cùng định dạng hồ sơ game và cache với bản macOS ([../macos](../macos)).
+Hiện hình game từ capture card UVC kèm phụ đề tiếng Việt (OCR + dịch bằng Claude hoặc Gemini). Cùng định dạng hồ sơ game và cache với bản macOS ([../macos](../macos)). Mô tả chung cả hai bản và so sánh khác biệt: [../README.md](../README.md).
 
 ## Cài đặt
 
@@ -30,7 +30,7 @@ Bộ cài chạy theo từng người dùng (không cần quyền admin), cài v
 3. Nhập API key, bật **Dịch** (Ctrl+T).
 4. Chưa có capture card? Chạy `GameTranslator.exe --demo` để thử với nguồn hình giả.
 
-Phím tắt: Ctrl+T dịch, Ctrl+R chọn vùng, Ctrl+Shift+R dịch lại, Ctrl+O hiện chữ gốc, F11/Alt+Enter toàn màn hình, Ctrl+H lịch sử, Ctrl+Shift+P hồ sơ game, Ctrl+, cài đặt.
+Phím tắt: Ctrl+T dịch, Ctrl+R chọn vùng, Ctrl+Shift+R dịch lại, Ctrl+O hiện chữ gốc, F11/Alt+Enter toàn màn hình, Ctrl+H lịch sử, Ctrl+L chỉnh nhanh phụ đề, Ctrl+Shift+P hồ sơ game, Ctrl+, cài đặt.
 
 ## Dòng lệnh
 
