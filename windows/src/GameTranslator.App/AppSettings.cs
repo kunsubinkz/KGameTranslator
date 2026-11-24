@@ -23,6 +23,36 @@ public static class AppPaths
     public static string Cache => Path.Combine(Local, "cache.sqlite");
     public static string Logs => Path.Combine(Local, "logs");
     public static string SettingsFile => Path.Combine(Roaming, "settings.json");
+    /// <summary>Môi trường Python, host và model của dịch offline (vài GB).</summary>
+    public static string? NllbOverride { get; set; }
+    public static string Nllb => NllbOverride ?? Path.Combine(Local, "nllb");
+    /// <summary>Thư mục `nllb\` cạnh exe: uv.exe, nllb_host.py, requirements-*.txt.</summary>
+    public static string NllbBundle => Path.Combine(AppContext.BaseDirectory, "nllb");
+}
+
+public enum LocalHostKind { Managed, External }
+
+/// <summary>Cấu hình dịch offline của máy (không theo hồ sơ game).</summary>
+public sealed class LocalTranslateSettings
+{
+    /// <summary>Dùng NLLB làm bộ dịch offline.</summary>
+    public bool Enabled { get; set; } = true;
+    public LocalHostKind Host { get; set; } = LocalHostKind.Managed;
+    public string ExternalUrl { get; set; } = "";
+    public string ModelId { get; set; } = GameTranslator.Core.LocalHost.LocalModelCatalog.DefaultRepo;
+    /// <summary>null = `nllb\models` trong thư mục dữ liệu.</summary>
+    public string? ModelsDir { get; set; }
+    /// <summary>auto | xpu | cuda | cpu</summary>
+    public string Device { get; set; } = "auto";
+    /// <summary>Bộ gói đã cài (xpu | cuda | cpu); "auto" = chọn theo GPU lúc cài.</summary>
+    public string Backend { get; set; } = "auto";
+    public int Beams { get; set; } = 1;
+    public int TimeoutSeconds { get; set; } = 10;
+    /// <summary>Model đã có sẵn ở thư mục khác (nhập từ cache Hugging Face): repo → thư mục.</summary>
+    public Dictionary<string, string> ModelPaths { get; set; } = [];
+    /// <summary>Tên repo thêm tay (bản fine-tune NLLB).</summary>
+    public List<string> ExtraModels { get; set; } = [];
+    public bool AutoStart { get; set; } = true;
 }
 
 /// <summary>Cài đặt chung của app (không thuộc hồ sơ game).</summary>
@@ -55,6 +85,8 @@ public sealed class AppSettings
     public bool ShowRegionFrame { get; set; }
     public string ProfileId { get; set; } = "default";
     public string OcrEngine { get; set; } = "windows";
+    /// <summary>Dịch offline bằng model NLLB chạy cục bộ.</summary>
+    public LocalTranslateSettings Local { get; set; } = new();
 
     private static readonly JsonSerializerOptions Options = new()
     {

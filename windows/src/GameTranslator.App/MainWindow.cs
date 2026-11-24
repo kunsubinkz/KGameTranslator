@@ -32,6 +32,7 @@ public sealed class MainWindow : Window
     private readonly TextBlock _stState = StatusText("");
     private readonly TextBlock _stModel = StatusText("");
     private readonly TextBlock _stQuota = StatusText("");
+    private readonly TextBlock _stNllb = StatusText("");
     private readonly TextBlock _stRight = StatusText("");
     private readonly TextBlock _stNotice = StatusText("");
     private readonly DispatcherTimer _timer = new() { Interval = TimeSpan.FromMilliseconds(500) };
@@ -162,6 +163,7 @@ public sealed class MainWindow : Window
         ToolTip.SetTip(_tbTranslate, "Bật/tắt dịch (Ctrl+T)");
 
         var subtitle = ToolButton(Ui.Horizontal(6, IconGlyph(0xE8D2), new TextBlock { Text = "Phụ đề", VerticalAlignment = VerticalAlignment.Center }), OpenSubtitleQuick, "Chỉnh phụ đề: cỡ chữ, vị trí, căn lề, độ đậm nền (Ctrl+L)");
+        var offline = ToolButton(Ui.Horizontal(6, IconGlyph(0xE753), new TextBlock { Text = "Offline", VerticalAlignment = VerticalAlignment.Center }), OpenLocalModel, "Model dịch offline NLLB: cài, tải model, chạy thử (Ctrl+Shift+M)");
         var fullscreen = ToolButton(IconGlyph(0xE740), ToggleFullscreen, "Toàn màn hình (F11)");
         var settings = ToolButton(IconGlyph(0xE713), OpenSettings, "Cài đặt (Ctrl+,)");
 
@@ -174,6 +176,7 @@ public sealed class MainWindow : Window
         right.Children.Add(region);
         right.Children.Add(_tbTranslate);
         right.Children.Add(subtitle);
+        right.Children.Add(offline);
         right.Children.Add(fullscreen);
         right.Children.Add(settings);
 
@@ -215,6 +218,9 @@ public sealed class MainWindow : Window
         left.Children.Add(Ui.Horizontal(7, _dot, _stState));
         left.Children.Add(_stModel);
         left.Children.Add(_stQuota);
+        _stNllb.Cursor = new Cursor(StandardCursorType.Hand);
+        _stNllb.PointerPressed += (_, _) => OpenLocalModel();
+        left.Children.Add(_stNllb);
         left.Children.Add(_stNotice);
         var right = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 16, HorizontalAlignment = HorizontalAlignment.Right };
         right.Children.Add(_stRight);
@@ -315,7 +321,14 @@ public sealed class MainWindow : Window
         _settings.Show(this);
     }
 
-    private Window? _subtitleQuick;
+    private Window? _subtitleQuick, _localModel;
+
+    private void OpenLocalModel()
+    {
+        if (_localModel is { IsVisible: true }) { _localModel.Activate(); return; }
+        _localModel = new LocalModelWindow(_s);
+        _localModel.Show(this);
+    }
 
     private void OpenSubtitleQuick()
     {
@@ -363,6 +376,7 @@ public sealed class MainWindow : Window
         else if (ctrl && !shift && e.Key == Key.H) OpenHistory();
         else if (ctrl && !shift && e.Key == Key.L) OpenSubtitleQuick();
         else if (ctrl && shift && e.Key == Key.P) OpenProfiles();
+        else if (ctrl && shift && e.Key == Key.M) OpenLocalModel();
         else if (ctrl && e.Key == Key.OemComma) OpenSettings();
         else handled = false;
         e.Handled = handled;
@@ -382,6 +396,7 @@ public sealed class MainWindow : Window
         else { _dot.Fill = Brushes.LimeGreen; _stState.Text = "Đang chờ hộp thoại"; }
         _stModel.Text = st.Model;
         _stQuota.Text = $"Còn {st.Quota} request hôm nay";
+        _stNllb.Text = st.Nllb;
         _stRight.Text = $"OCR {st.Ocr}    Dịch {st.Translate}    CPU {st.Cpu:0}%    {ShortGpu(st.Gpu)}";
 
         if (_tick % 10 == 0) AppLog.Write($"fps={st.Fps:0.0} dinh_dang={st.Format} gpu={st.Gpu} tre_trong_app={st.LatencyMs:0.0}ms cpu={st.Cpu:0}% ocr={st.Ocr} dich={st.Translate} msg={st.Message}");

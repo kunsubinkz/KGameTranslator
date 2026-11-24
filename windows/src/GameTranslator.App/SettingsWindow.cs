@@ -149,7 +149,7 @@ public sealed class SettingsWindow : Window
         panel.Children.Add(Ui.Row("Chế độ dịch", Ui.Combo(
             [new("OnlineOnly", TranslateMode.OnlineOnly.Title()), new("OnlineWithOfflineFallback", TranslateMode.OnlineWithOfflineFallback.Title()), new("OfflineOnly", TranslateMode.OfflineOnly.Title())],
             t.Mode.ToString(), c => { t.Mode = Enum.Parse<TranslateMode>(c.Id); SaveProfile(); }, 320),
-            "Bản Windows chưa có dịch offline: chế độ offline và dự phòng sẽ hiện chữ gốc khi không dịch online được."));
+            "Online + dự phòng: Claude/Gemini trước, lỗi hoặc hết hạn mức thì dùng NLLB. Chỉ offline: chỉ NLLB, không tốn tiền API (cần cài ở mục Dịch offline bên dưới)."));
 
         var provider = Ui.Combo([new("Claude", TranslateProvider.Claude.Title()), new("Gemini", TranslateProvider.Gemini.Title())],
             t.Provider.ToString(), _ => { }, 320);
@@ -205,7 +205,62 @@ public sealed class SettingsWindow : Window
         panel.Children.Add(Ui.Row("Tối đa mỗi phút", Ui.Number(t.RequestsPerMinute, 1, 120, 1, v => { t.RequestsPerMinute = (int)v; SaveProfile(); }, "0")));
         panel.Children.Add(Ui.Row("Tối đa mỗi ngày", Ui.Number(t.RequestsPerDay, 1, 20000, 10, v => { t.RequestsPerDay = (int)v; SaveProfile(); }, "0"),
             "Bộ đếm ngày đặt lại lúc nửa đêm giờ Thái Bình Dương (giống bản macOS)."));
+        panel.Children.Add(OfflineSection());
         return panel;
+    }
+
+    private Control OfflineSection()
+    {
+        var l = _s.Settings.Local;
+        var p = new StackPanel { Spacing = 4, Margin = new Thickness(0, 14, 0, 0) };
+        void Save() { _s.Settings.Save(); _s.ApplyProfile(); }
+        p.Children.Add(Ui.Label("Dịch offline (model local)", 15, Avalonia.Media.FontWeight.SemiBold));
+        p.Children.Add(Ui.Row("Dùng NLLB", Ui.Check("Dùng NLLB làm bộ dịch offline", l.Enabled, v => { l.Enabled = v; Save(); })));
+
+        var url = new TextBox { Width = 380, Text = l.ExternalUrl, Watermark = "http://192.168.1.20:47811" };
+        var token = new TextBox { Width = 380, PasswordChar = '•', Watermark = CredentialStore.Read("nllb-external") is null ? "Token của host" : "Đã lưu token (nhập mới để thay)" };
+        var urlRow = Ui.Row("Địa chỉ host", url);
+        var tokenRow = Ui.Row("Token", token);
+        void ShowExternal() => urlRow.IsVisible = tokenRow.IsVisible = l.Host == LocalHostKind.External;
+        p.Children.Add(Ui.Row("Host", Ui.Combo([new("Managed", "Tự chạy trên máy này"), new("External", "Host khác (máy khác trong mạng)")],
+            l.Host.ToString(), c => { l.Host = Enum.Parse<LocalHostKind>(c.Id); ShowExternal(); Save(); }, 320)));
+        url.LostFocus += (_, _) => { l.ExternalUrl = url.Text?.Trim() ?? ""; Save(); };
+        token.LostFocus += (_, _) =>
+        {
+            if (string.IsNullOrWhiteSpace(token.Text)) return;
+            CredentialStore.Write("nllb-external", token.Text.Trim());
+            token.Text = ""; token.Watermark = "Đã lưu token (nhập mới để thay)";
+        };
+        p.Children.Add(urlRow);
+        p.Children.Add(tokenRow);
+        ShowExternal();
+
+        p.Children.Add(Ui.Row("Số beam", Ui.Number(l.Beams, 1, 8, 1, v => { l.Beams = (int)v; _s.Settings.Save(); }, "0"),
+            "1 nhanh nhất; 4 dịch tốt hơn nhưng chậm hơn."));
+        var status = Ui.Hint("");
+        void ShowStatus() => status.Text = l.Host == LocalHostKind.External ? "" : _s.LocalHost.Status.Text + (_s.LocalHost.Status.Device is { } d ? " · " + d : "");
+        ShowStatus();
+        var timer = new Avalonia.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        timer.Tick += (_, _) => ShowStatus();
+        timer.Start();
+        Closed += (_, _) => timer.Stop();
+        var result = Ui.Hint("");
+        p.Children.Add(Ui.Row("Trạng thái", Ui.Stack(status, Ui.Horizontal(8,
+            Ui.Button("Thử kết nối", async () =>
+            {
+                result.Text = "Đang thử...";
+                try
+                {
+                    var tr = _s.OfflineTranslator();
+                    if (tr is null) { result.Text = "Dịch offline đang tắt."; return; }
+                    var h = await tr.HealthAsync();
+                    result.Text = h.Ready ? $"Sẵn sàng: {h.Model} · {h.Device}" : $"Host phản hồi nhưng chưa sẵn sàng ({h.State}{(h.Error is null ? "" : ": " + h.Error)}).";
+                }
+                catch (TranslationException ex) { result.Text = "Không kết nối được: " + ex.Message; }
+            }),
+            Ui.Button("Quản lý model local... (Ctrl+Shift+M)", () => new LocalModelWindow(_s).Show(this))), result)));
+        p.Children.Add(Ui.Hint("NLLB không dùng ngữ cảnh câu trước và từ điển game. Bản dịch offline hiện nhãn \"offline (NLLB)\" và được nâng cấp lên bản online khi còn hạn mức."));
+        return p;
     }
 
     // ---------- OCR ----------
@@ -238,7 +293,7 @@ public sealed class SettingsWindow : Window
         {
             ("Ctrl+T", "Bật/tắt dịch"), ("Ctrl+R", "Chọn vùng hộp thoại"), ("Ctrl+Shift+R", "Dịch lại (bỏ qua cache)"),
             ("Ctrl+O", "Hiện/ẩn chữ gốc"), ("F11 hoặc Alt+Enter", "Toàn màn hình (Esc để thoát)"),
-            ("Ctrl+H", "Lịch sử bản dịch"), ("Ctrl+L", "Chỉnh nhanh phụ đề"), ("Ctrl+Shift+P", "Hồ sơ game"), ("Ctrl+,", "Cài đặt"),
+            ("Ctrl+Shift+M", "Model dịch local (NLLB)"), ("Ctrl+H", "Lịch sử bản dịch"), ("Ctrl+L", "Chỉnh nhanh phụ đề"), ("Ctrl+Shift+P", "Hồ sơ game"), ("Ctrl+,", "Cài đặt"),
         };
         var p = new StackPanel { Spacing = 6 };
         foreach (var (k, d) in rows)

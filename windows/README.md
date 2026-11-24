@@ -32,6 +32,12 @@ Bộ cài chạy theo từng người dùng (không cần quyền admin), cài v
 
 Phím tắt: Ctrl+T dịch, Ctrl+R chọn vùng, Ctrl+Shift+R dịch lại, Ctrl+O hiện chữ gốc, F11/Alt+Enter toàn màn hình, Ctrl+H lịch sử, Ctrl+L chỉnh nhanh phụ đề, Ctrl+Shift+P hồ sơ game, Ctrl+, cài đặt.
 
+## Dịch offline (NLLB-200 chạy trên máy)
+
+Mở **Ctrl+Shift+M** (hoặc Cài đặt > Dịch > Quản lý model local) rồi bấm **Cài đặt dịch offline**: app tự tải Python + PyTorch (theo card màn hình: Intel Arc, NVIDIA hoặc CPU) và model NLLB-200 về thư mục dữ liệu của app, rồi khởi động một host dịch cục bộ. Không cần cài Python, pip hay model bằng tay; tắt app giữa chừng thì lần sau bấm lại sẽ làm tiếp. Sau đó chọn chế độ dịch "Online, dự phòng offline" hoặc "Chỉ offline" trong Cài đặt > Dịch. Có thể trỏ tới host chạy ở máy khác (cùng giao thức) trong cùng mục đó.
+
+Lưu ý: NLLB không dùng ngữ cảnh câu trước và từ điển game; bản dịch offline hiện nhãn "offline (NLLB)" và được nâng cấp lên bản online khi còn hạn mức. Model NLLB-200 theo giấy phép **CC-BY-NC 4.0 (phi thương mại)**; app không đóng gói model, người dùng tự tải từ Hugging Face. Chi tiết kỹ thuật: [PLAN_NLLB_LOCAL.md](PLAN_NLLB_LOCAL.md).
+
 ## Dòng lệnh
 
 ```powershell
@@ -43,6 +49,7 @@ GameTranslator.exe --upscale-test <dir>   # phóng 2x một ảnh mẫu qua từ
 GameTranslator.exe --upscale-perf         # đo thời gian GPU khi phóng 1080p lên 4K trên từng card
 GameTranslator.exe --render-ui <dir>  # xuất ảnh PNG các cửa sổ (không cần màn hình)
 GameTranslator.exe --demo             # nguồn hình giả + bật dịch
+GameTranslator.exe --nllb-selftest    # khởi động host NLLB (nếu đã cài), dịch 5 câu mẫu, in thiết bị và ms/câu; mã thoát 0 nếu ổn
 ```
 
 ## Phát triển

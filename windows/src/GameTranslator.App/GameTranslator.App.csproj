@@ -22,5 +22,7 @@
     <ProjectReference Include="..\GameTranslator.Core\GameTranslator.Core.csproj" />
     <ProjectReference Include="..\GameTranslator.Platform.Windows\GameTranslator.Platform.Windows.csproj" />
     <AvaloniaResource Include="Assets\**" />
+    <!-- Host NLLB: nllb_host.py + requirements-*.txt nằm trong nllb\ cạnh exe (uv.exe do build_release.ps1 thêm). -->
+    <Content Include="..\..\tools\nllb\*" Link="nllb\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

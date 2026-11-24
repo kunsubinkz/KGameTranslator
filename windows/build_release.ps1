@@ -30,6 +30,27 @@ function Sign-File($path) {
     if ($LASTEXITCODE -ne 0) { throw "Ký số lỗi: $path" }
 }
 
+# uv.exe (trình cài Python/gói của dịch offline) kèm trong thư mục nllb\ cạnh exe.
+# Ghim phiên bản; kiểm SHA-256 với file .sha256 của chính bản phát hành.
+$uvVersion = '0.9.8'
+function Get-Uv($arch) {
+    $triple = if ($arch -eq 'arm64') { 'aarch64-pc-windows-msvc' } else { 'x86_64-pc-windows-msvc' }
+    $cacheDir = Join-Path $artifacts 'uv-cache'
+    New-Item -ItemType Directory -Force $cacheDir | Out-Null
+    $zip = Join-Path $cacheDir "uv-$uvVersion-$triple.zip"
+    $url = "https://github.com/astral-sh/uv/releases/download/$uvVersion/uv-$triple.zip"
+    if (-not (Test-Path $zip)) {
+        Invoke-WebRequest $url -OutFile $zip
+        Invoke-WebRequest "$url.sha256" -OutFile "$zip.sha256"
+    }
+    $expected = ((Get-Content "$zip.sha256" -Raw) -split '\s+')[0].ToLowerInvariant()
+    $actual = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLowerInvariant()
+    if ($expected -ne $actual) { Remove-Item $zip, "$zip.sha256" -Force; throw "uv $triple sai SHA-256" }
+    $dir = Join-Path $cacheDir "uv-$uvVersion-$triple"
+    if (-not (Test-Path $dir)) { Expand-Archive $zip -DestinationPath $dir -Force }
+    return (Get-ChildItem $dir -Recurse -Filter uv.exe | Select-Object -First 1).FullName
+}
+
 if (-not $SkipTests) {
     Write-Host '== Test' -ForegroundColor Cyan
     dotnet test tests/GameTranslator.Core.Tests -c Release
@@ -46,6 +67,8 @@ foreach ($a in $Arch) {
         -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true `
         -p:PublishReadyToRun=true -p:DebugType=none -p:DebugSymbols=false -o $pub
     if ($LASTEXITCODE -ne 0) { throw "Publish win-$a thất bại" }
+    New-Item -ItemType Directory -Force (Join-Path $pub 'nllb') | Out-Null
+    Copy-Item (Get-Uv $a) (Join-Path $pub 'nllb\uv.exe') -Force
     Sign-File (Join-Path $pub 'GameTranslator.exe')
 
     Write-Host "== NSIS win-$a" -ForegroundColor Cyan

@@ -35,6 +35,21 @@ internal static class UiRender
 
         for (int i = 0; i < 5; i++)
             Shot($"cai-dat-{i + 1}", new SettingsWindow(session, () => { }) { Width = 760, Height = 760 }, i);
+        Shot("model-local", new LocalModelWindow(session) { Width = 860, Height = 800 });
+        // Trạng thái "đã cài" dựng từ thư mục giả trong %TEMP% (không đụng dữ liệu thật).
+        var fake = Path.Combine(Path.GetTempPath(), "gt-nllb-ui-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(Path.Combine(fake, "venv", "Scripts"));
+        File.WriteAllText(Path.Combine(fake, "venv", "Scripts", "python.exe"), "");
+        File.WriteAllText(Path.Combine(fake, "env.json"), "{\"Backend\":\"xpu\",\"Torch\":\"2.9.1+xpu\",\"Transformers\":\"4.57.1\",\"Python\":\"3.12.8\",\"Xpu\":true,\"Cuda\":false,\"DeviceName\":\"Intel(R) Arc(TM) B580 Graphics\"}");
+        var m600 = Path.Combine(fake, "models", "facebook--nllb-200-distilled-600M");
+        Directory.CreateDirectory(m600);
+        File.WriteAllText(Path.Combine(m600, "config.json"), "{}");
+        File.WriteAllText(Path.Combine(m600, "model.safetensors"), "x");
+        AppPaths.NllbOverride = fake;
+        session.ReconfigureLocalHost();
+        Shot("model-local-da-cai", new LocalModelWindow(session) { Width = 860, Height = 1250 });
+        AppPaths.NllbOverride = null;
+        try { Directory.Delete(fake, true); } catch (Exception) { }
         Shot("phu-de-nhanh", new SubtitleQuickWindow(session));
         Shot("lich-su", new HistoryWindow(session));
         Shot("ho-so-game", new ProfilesWindow(session, () => { }, () => { }));

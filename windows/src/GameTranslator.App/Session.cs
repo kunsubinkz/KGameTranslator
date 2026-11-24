@@ -1,6 +1,8 @@
 using GameTranslator.Core;
+using GameTranslator.Core.LocalHost;
 using GameTranslator.Core.Pipeline;
 using GameTranslator.Platform.Windows;
+using GameTranslator.Platform.Windows.LocalModel;
 using GameTranslator.Platform.Windows.Audio;
 using GameTranslator.Platform.Windows.Capture;
 using GameTranslator.Platform.Windows.Gpu;
@@ -12,7 +14,7 @@ namespace GameTranslator.App;
 /// <summary>Số liệu hiện trên thanh trạng thái và thẻ góc video.</summary>
 public sealed record StatusSnapshot(
     string Source, string Model, string Quota, string Ocr, string Translate, double Cpu, string Gpu,
-    double Fps, string Format, double LatencyMs, string? Message, string LastEngine);
+    double Fps, string Format, double LatencyMs, string? Message, string LastEngine, string Nllb = "");
 
 /// <summary>Điều phối toàn bộ: capture, vẽ, tiếng, OCR, dịch. Không phụ thuộc giao diện.</summary>
 public sealed class Session : IGpuFrameSink, IDisposable
@@ -26,6 +28,10 @@ public sealed class Session : IGpuFrameSink, IDisposable
     public PipelineCoordinator Pipeline { get; }
     public ResourceMonitor Resources { get; } = new();
     public VideoRenderer? Renderer { get; private set; }
+    /// <summary>Host NLLB tự quản lý (cài môi trường, tải model, chạy/dừng).</summary>
+    public LocalHostManager LocalHost { get; private set; }
+    /// <summary>Việc nền của dịch offline (cài, tải model); đóng cửa sổ không hủy.</summary>
+    public LocalJobs Jobs { get; }
 
     public List<Profile> ProfileList { get; private set; } = [];
     public Profile Current { get; private set; } = Profile.Default;
@@ -52,6 +58,8 @@ public sealed class Session : IGpuFrameSink, IDisposable
     {
         Directory.CreateDirectory(AppPaths.Local);
         Cache = new TranslationCache(AppPaths.Cache);
+        LocalHost = NewLocalHost();
+        Jobs = new LocalJobs(this);
         Pipeline = new PipelineCoordinator(new WindowsOcr(), Cache, OnPipelineEvent);
         Gpus = GpuCatalog.Enumerate();
 
@@ -91,10 +99,68 @@ public sealed class Session : IGpuFrameSink, IDisposable
         ITranslator? online = t.Mode == TranslateMode.OfflineOnly ? null : t.Provider == TranslateProvider.Claude
             ? new ClaudeTranslator(t.Model, () => CredentialStore.Read("claude"))
             : new GeminiTranslator(t.GeminiModel, () => CredentialStore.Read("gemini"));
-        _translator = new FallbackTranslator(t.Mode, online, t.ActiveModel, t.Provider, null, _limiter);
+        _translator = new FallbackTranslator(t.Mode, online, t.ActiveModel, t.Provider, MakeOffline(), _limiter);
         Pipeline.Configure(Current, _translator);
         ApplyRenderSettings();
         RefreshOverlay();
+        EnsureLocalHost();
+    }
+
+    // ---------- Dịch offline (NLLB) ----------
+
+    private LocalHostManager NewLocalHost()
+    {
+        var l = Settings.Local;
+        var paths = new NllbPaths(AppPaths.Nllb, AppPaths.NllbBundle, l.ModelsDir ?? Path.Combine(AppPaths.Nllb, "models"), l.ModelPaths);
+        return new LocalHostManager(paths, Path.Combine(AppPaths.Logs, "nllb-host.log"), () => Settings.Local.ModelId) { Device = l.Device };
+    }
+
+    /// <summary>Dựng lại host quản lý khi đổi thư mục model.</summary>
+    public void ReconfigureLocalHost()
+    {
+        var old = LocalHost;
+        LocalHost = NewLocalHost();
+        old.Dispose();
+        ApplyProfile();
+    }
+
+    public LocalHostTranslator? OfflineTranslator() => MakeOffline() as LocalHostTranslator;
+
+    private ITranslator? MakeOffline()
+    {
+        var l = Settings.Local;
+        if (!l.Enabled) return null;
+        return new LocalHostTranslator(
+            () => l.Host == LocalHostKind.External ? l.ExternalUrl : LocalHost.BaseUrl,
+            () => l.Host == LocalHostKind.External ? CredentialStore.Read("nllb-external") : LocalHostManager.Token(),
+            () => Settings.Local.Beams, timeoutSeconds: l.TimeoutSeconds);
+    }
+
+    /// <summary>Tự khởi động host khi hồ sơ cần dịch offline và host đã cài đủ.</summary>
+    public void EnsureLocalHost()
+    {
+        var l = Settings.Local;
+        if (!l.Enabled || l.Host != LocalHostKind.Managed || !l.AutoStart || Current.Translate.Mode == TranslateMode.OnlineOnly) return;
+        if (LocalHost.IsRunning) return;
+        if (!LocalHost.Environment.IsInstalled || !LocalHost.ModelDownloaded(l.ModelId)) return;
+        LocalHost.Device = l.Device;
+        _ = LocalHost.StartAsync();
+    }
+
+    /// <summary>Trạng thái NLLB cho thanh trạng thái; rỗng khi không dùng dịch offline.</summary>
+    public string NllbStatusText()
+    {
+        var l = Settings.Local;
+        if (!l.Enabled || Current.Translate.Mode == TranslateMode.OnlineOnly) return "";
+        if (l.Host == LocalHostKind.External) return string.IsNullOrWhiteSpace(l.ExternalUrl) ? "NLLB: chưa nhập địa chỉ" : "NLLB: host ngoài";
+        return LocalHost.Status.State switch
+        {
+            HostState.Ready => "NLLB: sẵn sàng",
+            HostState.Loading or HostState.Starting => "NLLB: đang nạp",
+            HostState.Error => "NLLB: lỗi",
+            HostState.NotInstalled => "NLLB: chưa cài",
+            _ => "NLLB: chưa chạy",
+        };
     }
 
     public void SaveCurrentProfile()
@@ -252,7 +318,7 @@ public sealed class Session : IGpuFrameSink, IDisposable
                 _subtitle = s.Target;
                 _translateMs = s.TranslateMs;
                 _engineLabel = s.Engine;
-                _icon = s.Cached ? "cache" : s.Engine == "original" ? "chữ gốc" : s.Engine.StartsWith("apple") ? "offline" : null;
+                _icon = s.Cached ? "cache" : s.Engine == "original" ? "chữ gốc" : s.Engine.StartsWith("apple") ? "offline (NLLB)" : null;
                 break;
             case PipelineEvent.Cleared:
                 _subtitle = null;
@@ -304,11 +370,11 @@ public sealed class Session : IGpuFrameSink, IDisposable
         string quota = _limiter is null ? "—" : $"{_limiter.RemainingToday()}/{_limiter.DailyLimit}";
         double fps = _usingTest ? Test.MeasuredFps : Capture.MeasuredFps;
         return new StatusSnapshot(
-            t.Mode == TranslateMode.OfflineOnly ? "Offline" : t.Provider == TranslateProvider.Claude ? "Claude" : "Gemini",
+            t.Mode == TranslateMode.OfflineOnly ? "Offline (NLLB)" : t.Provider == TranslateProvider.Claude ? "Claude" : "Gemini",
             t.ActiveModel, quota,
             _ocrMs > 0 ? $"{_ocrMs:0} ms" : "—", _translateMs > 0 ? $"{_translateMs:0} ms" : "—",
             Resources.SampleCpuPercent(), Renderer?.Gpu?.Name ?? "—", fps, _formatLabel,
-            Renderer?.Stats.InAppLatencyMs ?? 0, _videoMessage, _engineLabel);
+            Renderer?.Stats.InAppLatencyMs ?? 0, _videoMessage, _engineLabel, NllbStatusText());
     }
 
     /// <summary>Thử khóa API: dịch một câu mẫu bằng nhà cung cấp đã chọn.</summary>
@@ -337,6 +403,7 @@ public sealed class Session : IGpuFrameSink, IDisposable
     public void Dispose()
     {
         StopVideo();
+        LocalHost.Dispose();
         Renderer?.Dispose();
         Cache.Dispose();
     }

@@ -33,7 +33,7 @@ Khác với kế hoạch ban đầu:
 - "Mịn 4K" = **AMD FSR 1 (EASU + RCAS, MIT)** viết lại trong shader, thêm pass **FXAA** ở độ phân giải gốc (khử răng cưa có sẵn trong hình Switch) trước khi phóng; texture trung gian 10 bit. Đo 1080p → 4K: Arc B580 ~2,5 ms/khung, UHD 770 ~15–20 ms/khung nên có cơ chế tự lùi về song tuyến khi GPU đo được > 12 ms/khung (timestamp query). Khi thu nhỏ vẫn dùng Catmull-Rom. Mặc định đổi sang Mịn 4K (cài đặt v4). Chưa có "Siêu phân giải của GPU" (NVIDIA RTX VSR / Intel VSR). `--upscale-test` và `--upscale-perf` để so ảnh và đo.
 - Tiền xử lý ảnh OCR (phóng, đảo màu, tương phản) làm bằng CPU trên ảnh vùng nhỏ thay vì Direct2D effects.
 - Chưa làm (để giai đoạn mở rộng): PaddleOCR + DirectML, DirectShow dự phòng, dịch offline, giao diện tiếng Anh (hiện chỉ tiếng Việt), `CM_Register_Notification` (thay bằng tự thử mở lại capture mỗi ~3 giây), đo GPU % trên thanh trạng thái (hiện tên GPU), file thiết kế `Game Translator Windows - Giao diện.html`.
-- Dịch offline chưa có nên chế độ "dự phòng offline" hiện chữ gốc khi không dịch online được; `FallbackTranslator` vẫn giữ chỗ cho bộ dịch offline sau này.
+- Dịch offline: đã viết mã theo [PLAN_NLLB_LOCAL.md](PLAN_NLLB_LOCAL.md) (NLLB-200 qua host Python); xem bảng trạng thái ở file đó để biết phần nào đã kiểm chứng trên máy thật. Chưa cài môi trường thì chế độ offline vẫn hiện chữ gốc như trước.
 - Mở shell mới sau khi cài .NET để `dotnet` có trong PATH.
 - `Microsoft.Data.Sqlite` kéo theo `SQLitePCLRaw.lib.e_sqlite3` 2.1.11 có lỗ hổng (NU1903): đã ghim trực tiếp bản 2.1.14.
 - Khóa cache **không** chuẩn hóa NFC (kế hoạch ghi có): Swift không chuẩn hóa, và để dùng chung file cache với bản Mac thì hash phải giống từng byte. Chữ thường dùng `SwiftLowercase` (İ → i̇ cho khớp Swift).

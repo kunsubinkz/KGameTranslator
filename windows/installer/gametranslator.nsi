@@ -90,6 +90,10 @@ Section "Uninstall"
   DeleteRegKey HKCU "${UNINSTKEY}"
   DeleteRegKey HKCU "Software\KGameTranslator"
   ; Hồ sơ game, cache và API key (Credential Manager) được giữ lại để cài lại không mất dữ liệu.
+  ; Dữ liệu dịch offline (Python, PyTorch, model: vài GB) chỉ xóa khi người dùng đồng ý.
+  IfFileExists "$LOCALAPPDATA\GameTranslator\nllb\*.*" 0 +3
+    MessageBox MB_YESNO|MB_ICONQUESTION "Xóa luôn dữ liệu dịch offline (Python, PyTorch, model NLLB; có thể vài GB)?" /SD IDNO IDNO +2
+    RMDir /r "$LOCALAPPDATA\GameTranslator\nllb"
 SectionEnd
 
 Function un.CloseRunningApp

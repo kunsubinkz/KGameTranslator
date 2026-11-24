@@ -8,6 +8,7 @@ internal static class Program
     public static int Main(string[] args)
     {
         if (args.Contains("--selftest")) return SelfTest.Run();
+        if (args.Contains("--nllb-selftest")) return NllbSelfTest.Run();
         if (args.Contains("--probe-capture")) return CaptureProbe.Run();
         if (args.Contains("--ocr-image")) return OcrImageProbe.Run(args);
         if (args.Contains("--probe-live")) return LiveProbe.Run();

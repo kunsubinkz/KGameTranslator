@@ -8,13 +8,21 @@ Tài liệu gốc: [../huong_dan_nllb.md](../huong_dan_nllb.md) (chạy `nllb_be
 
 | Giai đoạn | Trạng thái |
 |---|---|
-| N0. Đo thử bằng tay (quyết định đi tiếp hay không) | Chưa làm |
-| N1. Host Python `nllb_host.py` + giao thức HTTP | Chưa làm |
-| N2. Core: `LocalHostTranslator`, tách câu, danh mục model | Chưa làm |
-| N3. Platform: môi trường Python, tải model, quản lý tiến trình host | Chưa làm |
-| N4. Giao diện: màn hình "Model dịch local" + tab Dịch | Chưa làm |
-| N5. Tích hợp pipeline, `--nllb-selftest`, kiểm thử thực tế | Chưa làm |
-| N6. Đóng gói, tài liệu | Chưa làm |
+| N0. Đo thử bằng tay (quyết định đi tiếp hay không) | **Chưa làm** (cần tải vài GB; chờ bạn đồng ý). Máy dev chưa có Python/uv. Các phiên bản ghim trong `tools/nllb/requirements-*.txt` (torch 2.9.1, transformers 4.57.1...) là **giá trị tạm, chưa kiểm** |
+| N1. Host Python `nllb_host.py` + giao thức HTTP | Đã viết (`tools/nllb/`). **Chưa chạy được lần nào** vì chưa có Python/torch trên máy; chỉ đã đọc lại logic |
+| N2. Core: `LocalHostTranslator`, tách câu, danh mục model | Xong, 16 test mới pass (Core 55/55) |
+| N3. Platform: môi trường Python, tải model, quản lý tiến trình host | Xong phần mã. Test pass: Job Object giết tiến trình con, chọn cổng trống, tải tiếp từ `.part` + kiểm SHA-256 với server giả (Windows 20/20). **Chưa thử thật**: `uv`, cài torch, tải từ Hugging Face, khởi động host |
+| N4. Giao diện: màn hình "Model dịch local" + tab Dịch | Xong, đã xuất PNG bằng `--render-ui` (`artifacts/ui-nllb`); mới xem trạng thái "chưa cài", chưa xem trạng thái đã cài/đang tải. Chờ bạn duyệt |
+| N5. Tích hợp pipeline, `--nllb-selftest`, kiểm thử thực tế | Đã nối vào `Session.ApplyProfile`, `--nllb-selftest` chạy đúng nhánh "chưa cài" (mã 3). **Ma trận thử với Switch chưa làm** |
+| N6. Đóng gói, tài liệu | `build_release.ps1` tải `uv.exe` ghim 0.9.8 + kiểm SHA-256 (**chưa chạy script**), NSIS hỏi xóa `nllb\` khi gỡ, README đã cập nhật. Chưa thử trên máy sạch |
+
+### Khác với kế hoạch ban đầu
+
+- Bỏ tùy chọn "Dừng host khi thoát app": Job Object luôn giết host khi app thoát nên tùy chọn không có ý nghĩa.
+- `nllb_host.py` và `requirements-*.txt` được chép cạnh exe bằng `Content` trong csproj (thư mục `nllb\`), không nhúng `EmbeddedResource`; app chép sang `nllb\host\` trong thư mục dữ liệu khi cài/khởi động.
+- Nhập model có sẵn từ cache Hugging Face dùng tại chỗ (ghi đường dẫn vào `LocalTranslateSettings.ModelPaths`), không chép.
+- Chưa có nút trên thanh công cụ; mở bằng Ctrl+Shift+M, thanh trạng thái (bấm vào chữ "NLLB: ...") hoặc Cài đặt > Dịch.
+- "Host khác": đã hỗ trợ phía client (địa chỉ + token). Host Python vẫn chỉ nghe `127.0.0.1` mặc định (có `--host` để mở ra mạng, app chưa tự làm việc này).
 
 ## 1. Hiện trạng và chỗ cắm vào
 

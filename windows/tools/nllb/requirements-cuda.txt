@@ -1,0 +1,6 @@
+# NVIDIA (CUDA 12.x). Phiên bản ghim: cập nhật theo số đo ở giai đoạn N0.
+--extra-index-url https://download.pytorch.org/whl/cu128
+torch==2.9.1
+transformers==4.57.1
+sentencepiece==0.2.1
+safetensors==0.6.2
